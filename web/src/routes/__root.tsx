@@ -1,11 +1,10 @@
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
-import Header from '../components/Header'
-
 import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
 
 import type { QueryClient } from '@tanstack/react-query'
+import { ThemeProvider } from '@/components/theme-provider.tsx'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -13,13 +12,11 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
-    <>
-      <Header />
-
+    <ThemeProvider defaultTheme="dark" storageKey="split-nest-theme">
       <Outlet />
       <TanStackRouterDevtools />
 
       <TanStackQueryLayout />
-    </>
+    </ThemeProvider>
   ),
 })
