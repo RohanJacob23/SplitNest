@@ -24,6 +24,7 @@ export default function SubmitButton({ label }: { label: string }) {
                   initial={{ opacity: 0, y: -25 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 25 }}
+                  className="block"
                 >
                   <Loader className="animate-spin" />
                 </motion.span>
@@ -33,6 +34,7 @@ export default function SubmitButton({ label }: { label: string }) {
                   initial={{ opacity: 0, y: -25 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 25 }}
+                  className="block"
                 >
                   {label}
                 </motion.span>
