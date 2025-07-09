@@ -9,6 +9,7 @@ import { routeTree } from './routeTree.gen'
 
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
+import DefaultPageLoading from './components/default-page-loading.tsx'
 
 // Create a new router instance
 const router = createRouter({
@@ -20,6 +21,8 @@ const router = createRouter({
   scrollRestoration: true,
   defaultStructuralSharing: true,
   defaultPreloadStaleTime: 0,
+  defaultPendingMs: 0,
+  defaultPendingComponent: DefaultPageLoading,
 })
 
 // Register the router instance for type safety

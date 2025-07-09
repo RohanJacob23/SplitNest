@@ -9,38 +9,135 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteRouteImport } from './routes/auth/route'
+import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
+import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as ProtectedDashboardLayoutRouteRouteImport } from './routes/_protected/_dashboard-layout/route'
+import { Route as ProtectedDashboardLayoutSettingRouteImport } from './routes/_protected/_dashboard-layout/setting'
+import { Route as ProtectedDashboardLayoutDashboardRouteImport } from './routes/_protected/_dashboard-layout/dashboard'
 
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedRouteRoute = ProtectedRouteRouteImport.update({
+  id: '/_protected',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthSignUpRoute = AuthSignUpRouteImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const ProtectedDashboardLayoutRouteRoute =
+  ProtectedDashboardLayoutRouteRouteImport.update({
+    id: '/_dashboard-layout',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+const ProtectedDashboardLayoutSettingRoute =
+  ProtectedDashboardLayoutSettingRouteImport.update({
+    id: '/setting',
+    path: '/setting',
+    getParentRoute: () => ProtectedDashboardLayoutRouteRoute,
+  } as any)
+const ProtectedDashboardLayoutDashboardRoute =
+  ProtectedDashboardLayoutDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => ProtectedDashboardLayoutRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/sign-up': typeof AuthSignUpRoute
+  '/dashboard': typeof ProtectedDashboardLayoutDashboardRoute
+  '/setting': typeof ProtectedDashboardLayoutSettingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/sign-up': typeof AuthSignUpRoute
+  '/dashboard': typeof ProtectedDashboardLayoutDashboardRoute
+  '/setting': typeof ProtectedDashboardLayoutSettingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_protected': typeof ProtectedRouteRouteWithChildren
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/_protected/_dashboard-layout': typeof ProtectedDashboardLayoutRouteRouteWithChildren
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/sign-up': typeof AuthSignUpRoute
+  '/_protected/_dashboard-layout/dashboard': typeof ProtectedDashboardLayoutDashboardRoute
+  '/_protected/_dashboard-layout/setting': typeof ProtectedDashboardLayoutSettingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/auth/login'
+    | '/auth/sign-up'
+    | '/dashboard'
+    | '/setting'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/auth/login'
+    | '/auth/sign-up'
+    | '/dashboard'
+    | '/setting'
+  id:
+    | '__root__'
+    | '/'
+    | '/_protected'
+    | '/auth'
+    | '/_protected/_dashboard-layout'
+    | '/auth/login'
+    | '/auth/sign-up'
+    | '/_protected/_dashboard-layout/dashboard'
+    | '/_protected/_dashboard-layout/setting'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProtectedRouteRoute: typeof ProtectedRouteRouteWithChildren
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +145,92 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/sign-up': {
+      id: '/auth/sign-up'
+      path: '/sign-up'
+      fullPath: '/auth/sign-up'
+      preLoaderRoute: typeof AuthSignUpRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_protected/_dashboard-layout': {
+      id: '/_protected/_dashboard-layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedDashboardLayoutRouteRouteImport
+      parentRoute: typeof ProtectedRouteRoute
+    }
+    '/_protected/_dashboard-layout/setting': {
+      id: '/_protected/_dashboard-layout/setting'
+      path: '/setting'
+      fullPath: '/setting'
+      preLoaderRoute: typeof ProtectedDashboardLayoutSettingRouteImport
+      parentRoute: typeof ProtectedDashboardLayoutRouteRoute
+    }
+    '/_protected/_dashboard-layout/dashboard': {
+      id: '/_protected/_dashboard-layout/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof ProtectedDashboardLayoutDashboardRouteImport
+      parentRoute: typeof ProtectedDashboardLayoutRouteRoute
+    }
   }
 }
 
+interface ProtectedDashboardLayoutRouteRouteChildren {
+  ProtectedDashboardLayoutDashboardRoute: typeof ProtectedDashboardLayoutDashboardRoute
+  ProtectedDashboardLayoutSettingRoute: typeof ProtectedDashboardLayoutSettingRoute
+}
+
+const ProtectedDashboardLayoutRouteRouteChildren: ProtectedDashboardLayoutRouteRouteChildren =
+  {
+    ProtectedDashboardLayoutDashboardRoute:
+      ProtectedDashboardLayoutDashboardRoute,
+    ProtectedDashboardLayoutSettingRoute: ProtectedDashboardLayoutSettingRoute,
+  }
+
+const ProtectedDashboardLayoutRouteRouteWithChildren =
+  ProtectedDashboardLayoutRouteRoute._addFileChildren(
+    ProtectedDashboardLayoutRouteRouteChildren,
+  )
+
+interface ProtectedRouteRouteChildren {
+  ProtectedDashboardLayoutRouteRoute: typeof ProtectedDashboardLayoutRouteRouteWithChildren
+}
+
+const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
+  ProtectedDashboardLayoutRouteRoute:
+    ProtectedDashboardLayoutRouteRouteWithChildren,
+}
+
+const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
+  ProtectedRouteRouteChildren,
+)
+
+interface AuthRouteRouteChildren {
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignUpRoute: typeof AuthSignUpRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignUpRoute: AuthSignUpRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProtectedRouteRoute: ProtectedRouteRouteWithChildren,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
