@@ -1,5 +1,5 @@
-import { authClient } from '@/lib/auth-client'
 import { queryOptions } from '@tanstack/react-query'
+import { authClient } from '@/lib/auth-client'
 
 export const sleep = async (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms))

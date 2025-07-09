@@ -1,12 +1,12 @@
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
+import { Loader } from 'lucide-react'
 import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { ThemeProvider } from '@/components/theme-provider.tsx'
 import { Toaster } from '@/components/ui/sonner.tsx'
-import { Loader } from 'lucide-react'
 import { getUser } from '@/query/get-user.ts'
 
 interface MyRouterContext {

@@ -1,3 +1,13 @@
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { Link, useNavigate } from '@tanstack/react-router'
+import {
+  CircleUser,
+  CreditCard,
+  EllipsisVertical,
+  LogOut,
+  Settings,
+} from 'lucide-react'
+import { toast } from 'sonner'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -16,16 +26,6 @@ import {
 } from '@/components/ui/sidebar'
 import { authClient } from '@/lib/auth-client'
 import { getUser } from '@/query/get-user'
-import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
-import { Link, useNavigate } from '@tanstack/react-router'
-import {
-  LogOut,
-  EllipsisVertical,
-  CircleUser,
-  CreditCard,
-  Settings,
-} from 'lucide-react'
-import { toast } from 'sonner'
 
 export function NavUser() {
   const navigate = useNavigate()

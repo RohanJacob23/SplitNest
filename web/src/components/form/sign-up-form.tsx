@@ -1,22 +1,22 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import type { ComponentProps } from 'react'
-import { cn } from '@/lib/utils'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { z } from 'zod/v4'
+import { toast } from 'sonner'
+import { useQueryClient } from '@tanstack/react-query'
+import type { ComponentProps } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { useAppForm } from '@/hooks/form'
 import { GithubIcon } from '@/logo/github'
 import { GoogleIcon } from '@/logo/google'
-import { toast } from 'sonner'
 import { authClient } from '@/lib/auth-client'
 import { getUser, sleep } from '@/query/get-user'
-import { useQueryClient } from '@tanstack/react-query'
 
 const signUpFormSchema = z.object({
   name: z.string().min(1, { error: 'Name is required' }),
@@ -45,10 +45,10 @@ export default function SignUpForm({
       await sleep(1500)
 
       await authClient.signUp.email(value, {
-        async onSuccess() {
-          await queryClient.invalidateQueries(getUser)
+        onSuccess() {
+          queryClient.removeQueries(getUser)
           toast.success('Signed up successfully', { id: loadingToast })
-          navigate({ to: '/dashboard' })
+          navigate({ to: '/dashboard', reloadDocument: true })
         },
         onError(context) {
           toast.error(context.error.message, { id: loadingToast })

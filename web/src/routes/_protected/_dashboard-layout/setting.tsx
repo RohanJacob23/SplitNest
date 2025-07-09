@@ -1,3 +1,8 @@
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { createFileRoute } from '@tanstack/react-router'
+import { User } from 'lucide-react'
+import { toast } from 'sonner'
+import { z } from 'zod/v4'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,11 +16,6 @@ import {
 } from '@/components/ui/select'
 import { useAppForm } from '@/hooks/form'
 import { getUser, sleep } from '@/query/get-user'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
-import { User } from 'lucide-react'
-import { toast } from 'sonner'
-import { z } from 'zod/v4'
 
 export const Route = createFileRoute('/_protected/_dashboard-layout/setting')({
   component: RouteComponent,

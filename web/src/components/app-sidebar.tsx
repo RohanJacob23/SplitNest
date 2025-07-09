@@ -1,3 +1,6 @@
+import { Link } from '@tanstack/react-router'
+import { Calendar, CreditCard, Home, Search } from 'lucide-react'
+import { NavUser } from './nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -11,9 +14,6 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from '@/components/ui/sidebar'
-import { Link } from '@tanstack/react-router'
-import { Home, Calendar, Search, CreditCard } from 'lucide-react'
-import { NavUser } from './nav-user'
 
 const items = [
   {

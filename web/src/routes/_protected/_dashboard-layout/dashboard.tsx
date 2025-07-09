@@ -1,14 +1,14 @@
+import { createFileRoute } from '@tanstack/react-router'
+import { DollarSign, TrendingUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
   Card,
+  CardAction,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardAction,
-  CardFooter,
 } from '@/components/ui/card'
-import { createFileRoute } from '@tanstack/react-router'
-import { DollarSign, TrendingUp } from 'lucide-react'
 
 export const Route = createFileRoute('/_protected/_dashboard-layout/dashboard')(
   {

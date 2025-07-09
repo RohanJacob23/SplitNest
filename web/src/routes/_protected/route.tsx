@@ -1,5 +1,5 @@
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { getUser } from '@/query/get-user'
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected')({
   loader: async ({ context }) => {

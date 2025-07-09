@@ -1,7 +1,7 @@
-import { useFormContext } from '@/hooks/form-context'
-import { Button } from '../../ui/button'
 import { Loader } from 'lucide-react'
-import { AnimatePresence, motion, MotionConfig } from 'motion/react'
+import { AnimatePresence, MotionConfig, motion } from 'motion/react'
+import { Button } from '../../ui/button'
+import { useFormContext } from '@/hooks/form-context'
 import { swift } from '@/lib/easing'
 
 export default function SubmitButton({ label }: { label: string }) {

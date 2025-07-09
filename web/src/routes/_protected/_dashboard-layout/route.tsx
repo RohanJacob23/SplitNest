@@ -1,7 +1,7 @@
+import { Outlet, createFileRoute, useLocation } from '@tanstack/react-router'
 import { AppSidebar } from '@/components/app-sidebar'
 import { Separator } from '@/components/ui/separator'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected/_dashboard-layout')({
   component: RouteComponent,
