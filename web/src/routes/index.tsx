@@ -2,7 +2,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import Header from '@/components/sections/header'
 import Hero from '@/components/sections/hero'
 import Features from '@/components/sections/features'
-import Stats from '@/components/sections/stats'
 import Cta from '@/components/sections/cta'
 import Footer from '@/components/sections/footer'
 
@@ -20,9 +19,6 @@ export default function App() {
 
       {/* Features Section */}
       <Features />
-
-      {/* Stats Section */}
-      <Stats />
 
       {/* CTA Section */}
       <Cta />

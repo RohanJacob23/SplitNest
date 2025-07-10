@@ -30,4 +30,19 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       />
     </ThemeProvider>
   ),
+  errorComponent: ({ error }) => {
+    console.log(error)
+
+    // Render an error message
+    return (
+      <main className="grid min-h-screen place-content-center space-y-2 text-center">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight text-balance">
+          Something went wrong!!
+        </h1>
+        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+          {error.message}
+        </h2>
+      </main>
+    )
+  },
 })

@@ -20,3 +20,10 @@ export const elegant: Transition = {
   damping: 19,
   mass: 1.2,
 }
+
+export const slow: Transition = {
+  type: 'spring',
+  stiffness: 26.7,
+  damping: 4.1,
+  mass: 0.2,
+}

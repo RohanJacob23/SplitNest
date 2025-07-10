@@ -23,10 +23,10 @@ export default function Features() {
     <section id="features" className="bg-muted/30 px-6 py-24">
       <div className="mx-auto max-w-6xl">
         <div className="mb-20 text-center">
-          <h2 className="mb-6 text-4xl font-light md:text-5xl">
-            Built for <span className="font-medium">modern teams</span>
-          </h2>
-          <p className="text-muted-foreground mx-auto max-w-2xl text-xl font-light">
+          <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+            Built for modern teams
+          </h1>
+          <p className="text-muted-foreground text-xl">
             Everything you need to organize, split, and manage your data
             efficiently.
           </p>
@@ -34,15 +34,12 @@ export default function Features() {
 
         <div className="grid gap-8 md:grid-cols-3">
           {features.map((feature) => (
-            <Card
-              key={feature.title}
-              className="bg-card border hover:shadow-lg"
-            >
-              <CardContent className="p-8">
-                <div className="bg-muted mb-6 flex h-12 w-12 items-center justify-center rounded-xl">
-                  <feature.icon className="text-foreground h-6 w-6" />
+            <Card key={feature.title}>
+              <CardContent>
+                <div className="bg-muted mb-4 flex size-12 items-center justify-center rounded-xl">
+                  <feature.icon className="text-foreground size-6" />
                 </div>
-                <h3 className="mb-4 text-2xl font-medium">{feature.title}</h3>
+                <h3 className="text-2xl font-medium">{feature.title}</h3>
                 <p className="text-muted-foreground leading-relaxed font-light">
                   {feature.description}
                 </p>
