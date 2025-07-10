@@ -8,6 +8,7 @@ import type { QueryClient } from '@tanstack/react-query'
 import { ThemeProvider } from '@/components/theme-provider.tsx'
 import { Toaster } from '@/components/ui/sonner.tsx'
 import { getUser } from '@/query/get-user.ts'
+import Error404 from '@/components/pages/error.tsx'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -30,4 +31,5 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       />
     </ThemeProvider>
   ),
+  notFoundComponent: Error404,
 })
