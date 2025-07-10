@@ -1,38 +1,65 @@
+import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
-import { ArrowDown, ArrowRight } from 'lucide-react'
+import { ArrowRight, CirclePlay, Star } from 'lucide-react'
+import TextReveal from './animation/text-reveal'
+import { motion } from 'motion/react'
+import { slow } from '@/lib/easing'
+
+const MotionBadge = motion.create(Badge)
 
 export default function Hero() {
   return (
-    <section className="flex min-h-[80vh] flex-col items-center justify-center px-6 text-center">
-      <div className="mx-auto max-w-4xl">
-        <div className="bg-muted text-muted-foreground mb-8 inline-flex items-center rounded-full px-4 py-2 text-sm">
-          ✨ Introducing Split Nest v2.0
-        </div>
-
-        <h1 className="mb-6 text-5xl leading-tight font-light md:text-7xl">
-          Data organization
-          <br />
-          <span className="font-medium">made simple</span>
+    <section className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-6">
+      <div className="max-w-2xl text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          className="overflow-y-clip"
+        >
+          <MotionBadge
+            variants={{
+              hidden: { opacity: 0, y: 50, filter: 'blur(8px)' },
+              visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+            }}
+            transition={slow}
+            variant="outline"
+          >
+            <Star className="size-4 fill-yellow-500 text-yellow-500" />
+            Just released v1.0.0
+          </MotionBadge>
+        </motion.div>
+        <h1 className="mt-6 text-4xl font-bold sm:text-5xl md:text-6xl md:leading-[1.2]">
+          <TextReveal>Customized Shadcn UI Blocks & Components</TextReveal>
         </h1>
-
-        <p className="text-muted-foreground mx-auto mb-12 max-w-2xl text-xl font-light md:text-2xl">
-          Transform complex data into organized, nested structures with
-          intelligent splitting algorithms.
+        <p className="mt-6 text-[17px] md:text-lg">
+          <TextReveal delay={0.25}>
+            Explore a collection of Shadcn UI blocks and components, ready to
+            preview and copy. Streamline your development workflow with
+            easy-to-implement examples.
+          </TextReveal>
         </p>
 
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button className="px-8 py-6 text-lg font-medium">
-            Get Started Free
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-          <Button variant="ghost" className="px-8 py-6 text-lg font-medium">
-            View Demo
-          </Button>
-        </div>
-      </div>
-
-      <div className="absolute bottom-12">
-        <ArrowDown className="text-muted-foreground h-5 w-5" />
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          className="overflow-y-clip"
+        >
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 50, filter: 'blur(8px)' },
+              visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+            }}
+            transition={{ ...slow, delay: 0.5 }}
+            className="mt-12 flex items-center justify-center gap-4"
+          >
+            <Button size="lg">
+              Get Started <ArrowRight className="size-5" />
+            </Button>
+            <Button variant="outline" size="lg">
+              <CirclePlay className="size-5" /> Watch Demo
+            </Button>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )

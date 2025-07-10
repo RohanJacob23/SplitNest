@@ -12,6 +12,17 @@ export default defineConfig({
     viteReact(),
     tailwindcss(),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          gsap: ['gsap'],
+          motion: ['motion'],
+          zod: ['zod/v4'],
+        },
+      },
+    },
+  },
   server: {
     proxy: {
       '/api': 'http://localhost:5000',
