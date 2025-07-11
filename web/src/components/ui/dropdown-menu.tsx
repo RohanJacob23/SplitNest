@@ -3,11 +3,51 @@ import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+import { AnimatePresence, motion, type TargetAndTransition } from 'motion/react'
+import { swift } from '@/lib/easing'
+
+interface DropdownMenuContextType {
+  open: boolean
+}
+
+const DropdownMenuContext = React.createContext<
+  DropdownMenuContextType | undefined
+>(undefined)
+
+const useDropdownMenu = (): DropdownMenuContextType => {
+  const context = React.useContext(DropdownMenuContext)
+  if (!context) {
+    throw new Error('useDropdownMenu must be used within a DropdownMenu')
+  }
+  return context
+}
 
 function DropdownMenu({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
+  const [isOpen, setIsOpen] = React.useState(
+    props?.open ?? props?.defaultOpen ?? false,
+  )
+
+  const handleOpenChange = React.useCallback(
+    (open: boolean) => {
+      setIsOpen(open)
+      props.onOpenChange?.(open)
+    },
+    [props],
+  )
+  return (
+    <DropdownMenuContext.Provider
+      value={{ open: isOpen }}
+      children={
+        <DropdownMenuPrimitive.Root
+          data-slot="dropdown-menu"
+          onOpenChange={handleOpenChange}
+          {...props}
+        />
+      }
+    />
+  )
 }
 
 function DropdownMenuPortal({
@@ -29,23 +69,68 @@ function DropdownMenuTrigger({
   )
 }
 
+const initial: TargetAndTransition = {
+  opacity: 0,
+  scale: 0.95,
+  filter: 'blur(8px)',
+}
+const animate: TargetAndTransition = {
+  opacity: 1,
+  scale: 1,
+  filter: 'blur(0px)',
+  x: 0,
+}
+
 function DropdownMenuContent({
   className,
   sideOffset = 4,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+  const { open } = useDropdownMenu()
+
   return (
-    <DropdownMenuPrimitive.Portal>
-      <DropdownMenuPrimitive.Content
-        data-slot="dropdown-menu-content"
-        sideOffset={sideOffset}
-        className={cn(
-          'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md',
-          className,
-        )}
-        {...props}
-      />
-    </DropdownMenuPrimitive.Portal>
+    <AnimatePresence>
+      {open && (
+        <DropdownMenuPrimitive.Portal forceMount>
+          <DropdownMenuPrimitive.Content
+            data-slot="dropdown-menu-content"
+            sideOffset={sideOffset}
+            asChild
+            className={cn(
+              'bg-popover text-popover-foreground z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md',
+              // 'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md',
+              className,
+            )}
+            {...props}
+          >
+            <motion.div
+              initial={
+                props.side === 'bottom'
+                  ? { ...initial, y: 15 }
+                  : { ...initial, x: -15 }
+              }
+              animate={
+                props.side === 'bottom'
+                  ? { ...animate, y: 0 }
+                  : { ...animate, x: 0 }
+              }
+              exit={
+                props.side === 'bottom'
+                  ? { ...initial, y: 15 }
+                  : { ...initial, x: -15 }
+              }
+              style={{
+                transformOrigin:
+                  'var(--radix-dropdown-menu-content-transform-origin)',
+              }}
+              transition={swift}
+            >
+              {props.children}
+            </motion.div>
+          </DropdownMenuPrimitive.Content>
+        </DropdownMenuPrimitive.Portal>
+      )}
+    </AnimatePresence>
   )
 }
 

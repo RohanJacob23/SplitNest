@@ -44,8 +44,8 @@ function RouteComponent() {
         </Card>
 
         {/* active subscription */}
-        <Card className="max-w-lg flex-auto gap-4">
-          <CardHeader>
+        <Card className="max-w-lg min-w-56 flex-auto gap-4">
+          <CardHeader className="">
             <CardDescription>Active Subscriptions:</CardDescription>
             <CardTitle className="text-3xl font-semibold tabular-nums">
               4

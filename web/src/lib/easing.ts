@@ -27,3 +27,10 @@ export const slow: Transition = {
   damping: 4.1,
   mass: 0.2,
 }
+
+export const fling: Transition = {
+  type: 'spring',
+  stiffness: 800,
+  damping: 80,
+  mass: 4,
+}

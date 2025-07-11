@@ -38,7 +38,7 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'bg-background/70 sticky top-0 z-50 mx-auto max-w-7xl rounded-xl backdrop-blur-3xl transition-[transform,max-width] duration-300 ease-in-out',
+        'bg-background/70 sticky top-0 z-50 mx-2 max-w-7xl translate-y-0 rounded-xl backdrop-blur-3xl transition-[transform_max-width] duration-300 ease-in-out sm:mx-auto',
         isScrolled && 'max-w-5xl translate-y-2 rounded-2xl border',
       )}
     >

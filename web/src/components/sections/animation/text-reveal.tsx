@@ -1,7 +1,7 @@
 import gsap from 'gsap'
 import { SplitText } from 'gsap/SplitText'
-import { useEffect, type ReactNode } from 'react'
-import { stagger, useAnimate } from 'motion/react'
+import { useEffect, useRef, type ReactNode } from 'react'
+import { stagger, useAnimate, useInView } from 'motion/react'
 import { slow } from '@/lib/easing'
 
 gsap.registerPlugin(SplitText)
@@ -14,28 +14,37 @@ export default function TextReveal({
   delay?: number
 }) {
   const [scope, animate] = useAnimate()
+  const isInView = useInView(scope, { once: true, margin: '0px 0px -25%' })
 
-  //   const ref = useRef<HTMLSpanElement>(null)
+  const split = useRef<SplitText>(null)
 
   useEffect(() => {
-    const split = new SplitText(scope.current, {
-      type: 'words, lines',
-      mask: 'lines',
-    })
+    if (!split.current)
+      split.current = new SplitText(scope.current, {
+        type: 'words, lines',
+        mask: 'lines',
+      })
 
-    animate(
-      split.lines,
-      {
-        y: ['100%', '0%'],
-        opacity: [0, 1],
-        filter: ['blur(8px)', 'blur(0px)'],
-      },
-      {
-        ...slow,
-        delay: stagger(0.1, { startDelay: delay }),
-      },
-    )
-  }, [])
+    if (isInView)
+      animate(
+        split.current.lines,
+        {
+          y: '0%',
+          opacity: 1,
+          filter: 'blur(0px)',
+        },
+        {
+          ...slow,
+          delay: stagger(0.1, { startDelay: delay }),
+        },
+      )
+    else
+      animate(
+        split.current.lines,
+        { y: '100%', opacity: 0, filter: 'blur(8px)' },
+        { duration: 0 },
+      )
+  }, [isInView])
 
   return (
     <span ref={scope} className="inline-block">

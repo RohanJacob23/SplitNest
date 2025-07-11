@@ -189,6 +189,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-expo-inOut: cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 
 @layer base {
@@ -196,6 +199,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
   }
 }

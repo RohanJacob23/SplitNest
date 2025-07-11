@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
-import {  cva } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 import { PanelLeftIcon } from 'lucide-react'
-import type {VariantProps} from 'class-variance-authority';
+import type { VariantProps } from 'class-variance-authority'
 
 import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
@@ -23,6 +23,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+
+import { motion } from 'motion/react'
+import { snap } from '@/lib/easing'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -157,7 +160,7 @@ function Sidebar({
   className,
   children,
   ...props
-}: React.ComponentProps<'div'> & {
+}: React.ComponentProps<typeof motion.div> & {
   side?: 'left' | 'right'
   variant?: 'sidebar' | 'floating' | 'inset'
   collapsible?: 'offcanvas' | 'icon' | 'none'
@@ -166,7 +169,7 @@ function Sidebar({
 
   if (collapsible === 'none') {
     return (
-      <div
+      <motion.div
         data-slot="sidebar"
         className={cn(
           'bg-sidebar text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col',
@@ -175,7 +178,7 @@ function Sidebar({
         {...props}
       >
         {children}
-      </div>
+      </motion.div>
     )
   }
 
@@ -186,7 +189,7 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
-          className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
+          className="bg-sidebar text-sidebar-foreground [&>button]:hidden"
           style={
             {
               '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
@@ -198,7 +201,9 @@ function Sidebar({
             <SheetTitle>Sidebar</SheetTitle>
             <SheetDescription>Displays the mobile sidebar.</SheetDescription>
           </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
+          <motion.div className="flex h-full w-full flex-col">
+            {children}
+          </motion.div>
         </SheetContent>
       </Sheet>
     )
@@ -214,40 +219,66 @@ function Sidebar({
       data-slot="sidebar"
     >
       {/* This is what handles the sidebar gap on desktop */}
-      <div
+      <motion.div
         data-slot="sidebar-gap"
+        animate={{
+          width:
+            state === 'collapsed'
+              ? collapsible === 'icon'
+                ? SIDEBAR_WIDTH_ICON
+                : '0rem'
+              : SIDEBAR_WIDTH,
+        }}
+        transition={snap}
+        initial={false}
         className={cn(
-          'relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear',
-          'group-data-[collapsible=offcanvas]:w-0',
+          'relative w-(--sidebar-width) bg-transparent',
+          // 'relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear',
+          // 'group-data-[collapsible=offcanvas]:w-0',
           'group-data-[side=right]:rotate-180',
           variant === 'floating' || variant === 'inset'
             ? 'group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]'
-            : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)',
+            : '',
+          // : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)',
         )}
       />
-      <div
+      <motion.div
         data-slot="sidebar-container"
+        animate={{
+          // left:
+          //   state !== 'collapsed' && collapsible === 'offcanvas'
+          //     ? 0
+          //     : 'calc(var(--sidebar-width)*-1)',
+          width:
+            state === 'collapsed' && collapsible === 'icon'
+              ? SIDEBAR_WIDTH_ICON
+              : SIDEBAR_WIDTH,
+        }}
+        transition={snap}
+        initial={false}
         className={cn(
-          'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex',
+          'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) md:flex',
+          // 'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex',
           side === 'left'
             ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
             : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
           // Adjust the padding for floating and inset variants.
           variant === 'floating' || variant === 'inset'
             ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]'
-            : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l',
+            : '',
+          // : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l',
           className,
         )}
         {...props}
       >
-        <div
+        <motion.div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
           className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
         >
           {children}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   )
 }

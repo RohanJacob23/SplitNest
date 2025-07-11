@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Calendar, CreditCard, Home, Search } from 'lucide-react'
+import { Calendar, CreditCard, DollarSign, Home, Search } from 'lucide-react'
 import { NavUser } from './nav-user'
 import {
   Sidebar,
@@ -42,12 +42,18 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarHeader className="h-16 justify-center border-b">
         <SidebarMenu>
           <SidebarMenuItem className="">
-            <SidebarMenuButton asChild className="h-full text-lg font-semibold">
-              <Link to="/">Split Nest</Link>
+            <SidebarMenuButton
+              asChild
+              className="h-full text-lg font-semibold text-nowrap"
+            >
+              <Link to="/">
+                <DollarSign />
+                Split Nest
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -66,6 +72,7 @@ export function AppSidebar() {
                         isActive={isActive}
                         className="cursor-pointer"
                         disabled={item.disabled}
+                        tooltip={item.title}
                       >
                         <item.icon />
                         <span>{item.title}</span>

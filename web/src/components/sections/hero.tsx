@@ -14,6 +14,7 @@ export default function Hero() {
         <motion.div
           initial="hidden"
           whileInView="visible"
+          viewport={{ once: true }}
           className="overflow-y-clip"
         >
           <MotionBadge
@@ -42,6 +43,7 @@ export default function Hero() {
         <motion.div
           initial="hidden"
           whileInView="visible"
+          viewport={{ once: true }}
           className="overflow-y-clip"
         >
           <motion.div
