@@ -26,7 +26,7 @@ const MotionCard = motion.create(Card)
 
 export default function Features() {
   return (
-    <section id="features" className="bg-muted/30 px-6 py-24">
+    <section id="features" className="bg-base-200 dark:bg-base-900 px-6 py-24">
       <div className="mx-auto max-w-6xl">
         <div className="mb-20 text-center">
           <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
@@ -55,10 +55,11 @@ export default function Features() {
               }}
               transition={slow}
               key={feature.title}
+              className="bg-background"
             >
               <CardContent>
-                <div className="bg-muted mb-4 flex size-12 items-center justify-center rounded-xl">
-                  <feature.icon className="text-foreground size-6" />
+                <div className="bg-primary-100 dark:bg-primary-950 mb-4 flex size-12 items-center justify-center rounded-xl">
+                  <feature.icon className="text-primary size-6" />
                 </div>
                 <h3 className="text-2xl font-medium">{feature.title}</h3>
                 <p className="text-muted-foreground leading-relaxed font-light">

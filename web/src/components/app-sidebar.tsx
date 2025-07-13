@@ -42,7 +42,7 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader className="h-16 justify-center border-b">
         <SidebarMenu>
           <SidebarMenuItem className="">

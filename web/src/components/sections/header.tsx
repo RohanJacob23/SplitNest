@@ -38,11 +38,17 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'bg-background/70 sticky top-0 z-50 mx-2 max-w-7xl translate-y-0 rounded-xl backdrop-blur-3xl transition-[transform_max-width] duration-300 ease-in-out sm:mx-auto',
-        isScrolled && 'max-w-5xl translate-y-2 rounded-2xl border',
+        'sticky top-0 z-50 mx-4 max-w-7xl translate-y-0 transition-[transform_max-width] duration-300 ease-in-out sm:mx-auto',
+        isScrolled && 'max-w-5xl translate-y-2',
       )}
     >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+      <nav
+        className={cn(
+          'bg-background/60 mx-auto flex h-16 max-w-7xl items-center justify-between px-6 backdrop-blur-3xl',
+          isScrolled &&
+            'border-primary/50 dark:border-primary/15 rounded-2xl border border-dashed',
+        )}
+      >
         <div className="flex items-center space-x-3">
           <div className="bg-foreground flex h-8 w-8 items-center justify-center rounded-lg">
             <div className="bg-background h-3 w-3 rounded-sm" />

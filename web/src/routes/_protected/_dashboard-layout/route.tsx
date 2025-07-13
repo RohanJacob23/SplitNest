@@ -14,7 +14,7 @@ function RouteComponent() {
     <SidebarProvider>
       <AppSidebar />
       <main className="grid flex-auto grid-rows-[auto_1fr]">
-        <div className="flex h-16 items-center gap-2 border-b px-4 py-2">
+        <div className="bg-background/70 sticky top-0 flex h-16 items-center gap-2 border-b px-4 py-2 backdrop-blur-3xl">
           <SidebarTrigger />
           <Separator
             orientation="vertical"

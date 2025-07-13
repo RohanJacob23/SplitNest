@@ -95,7 +95,6 @@ function SheetOverlay({
 
 const hidden: { [key: string]: TargetAndTransition } = {
   left: { x: '-100%', transition: swift },
-  // left: { x: 'calc(-100% - 0.75rem)', transition: swift },
   right: { x: '100%', transition: swift },
   top: { y: '-100%', transition: swift },
   bottom: { y: '100%', transition: swift },
