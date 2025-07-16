@@ -27,7 +27,7 @@ function RouteComponent() {
     <section className="mx-auto w-full max-w-7xl space-y-6 p-4">
       <div className="flex flex-wrap gap-4">
         {/* monthly total  */}
-        <Card className="max-w-sm flex-auto gap-4">
+        <Card className="flex-auto gap-4">
           <CardHeader>
             <CardDescription>Monthly Total</CardDescription>
             <CardTitle className="text-3xl font-semibold tabular-nums">
@@ -50,7 +50,7 @@ function RouteComponent() {
         </Card>
 
         {/* active subscription */}
-        <Card className="max-w-sm flex-auto gap-4">
+        <Card className="flex-auto gap-4">
           <CardHeader>
             <CardDescription>Active Subscriptions:</CardDescription>
             <CardTitle className="text-3xl font-semibold tabular-nums">
@@ -64,7 +64,7 @@ function RouteComponent() {
         </Card>
 
         {/* all pending payments */}
-        <Card className="max-w-sm flex-auto gap-4">
+        <Card className="flex-auto gap-4">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Pending Payments
@@ -78,7 +78,7 @@ function RouteComponent() {
         </Card>
 
         {/* net balance */}
-        <Card className="max-w-sm flex-auto gap-4">
+        <Card className="flex-auto gap-4">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Net Balance</CardTitle>
             {netBalance >= 0 ? (

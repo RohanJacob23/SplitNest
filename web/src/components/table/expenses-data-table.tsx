@@ -75,7 +75,7 @@ export default function ExpensesDataTable() {
   }
 
   return (
-    <div>
+    <div className="grid">
       {/* filter input */}
       <div className="flex items-center gap-2 py-4">
         <div className="relative w-full max-w-sm">
