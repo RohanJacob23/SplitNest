@@ -13,8 +13,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAppForm } from '@/hooks/form'
-import { GithubIcon } from '@/logo/github'
-import { GoogleIcon } from '@/logo/google'
+import { GithubIcon } from '@/icons/logo/github'
+import { GoogleIcon } from '@/icons/logo/google'
 import { authClient } from '@/lib/auth-client'
 import { getUser, sleep } from '@/query/get-user'
 

@@ -11,6 +11,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import SubscriptionDataTable from '@/components/table/subscription-data-table'
+import ExpensesDataTable from '@/components/table/expenses-data-table'
 
 export const Route = createFileRoute('/_protected/_dashboard-layout/dashboard')(
   {
@@ -101,38 +103,70 @@ function RouteComponent() {
       </div>
 
       {/* tabs */}
-      <Tabs defaultValue="account">
+      <Tabs defaultValue="overview">
         <TabsList className="w-full">
-          <TabsTrigger value="account">Account</TabsTrigger>
-          <TabsTrigger value="password">Password</TabsTrigger>
-          <TabsTrigger value="test">Test</TabsTrigger>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="all-subscriptions">All Subscriptions</TabsTrigger>
+          <TabsTrigger value="recent-expenses">Recent Expenses</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="account">
-          <Card className="border-0 bg-transparent shadow-none">
-            <CardHeader>
-              <CardTitle>Make changes to your account here.</CardTitle>
-              <CardDescription>
-                Make changes to your account here.
-              </CardDescription>
-            </CardHeader>
-          </Card>
+        <TabsContent value="overview">
+          <OverviewContent />
         </TabsContent>
-        <TabsContent value="password">
-          <Card className="border-0 bg-transparent shadow-none">
-            <CardHeader>
-              <CardTitle>Change your password here.</CardTitle>
-            </CardHeader>
-          </Card>
+        <TabsContent value="all-subscriptions">
+          <AllSubscriptionsContent />
         </TabsContent>
-        <TabsContent value="test">
-          <Card className="border-0 bg-transparent shadow-none">
-            <CardHeader>
-              <CardTitle>Test your password here.</CardTitle>
-            </CardHeader>
-          </Card>
+        <TabsContent value="recent-expenses">
+          <RecentExpensesContent />
         </TabsContent>
       </Tabs>
     </section>
+  )
+}
+
+const OverviewContent = () => {
+  return (
+    <div className="grid min-h-96 gap-2 md:grid-cols-2">
+      <Card className="items-center justify-center">
+        <CardHeader>
+          <CardTitle className="text-muted-foreground text-xl">
+            comming soon...
+          </CardTitle>
+        </CardHeader>
+      </Card>
+      <Card className="items-center justify-center">
+        <CardHeader>
+          <CardTitle className="text-muted-foreground text-xl">
+            comming soon...
+          </CardTitle>
+        </CardHeader>
+      </Card>
+    </div>
+  )
+}
+
+const AllSubscriptionsContent = () => {
+  return (
+    <Card className="gap-2">
+      <CardHeader>
+        <CardTitle>All Subscriptions</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <SubscriptionDataTable />
+      </CardContent>
+    </Card>
+  )
+}
+
+const RecentExpensesContent = () => {
+  return (
+    <Card className="gap-2">
+      <CardHeader>
+        <CardTitle>Recent Expenses</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ExpensesDataTable />
+      </CardContent>
+    </Card>
   )
 }

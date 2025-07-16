@@ -1,8 +1,8 @@
-import { Loader } from 'lucide-react'
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import { Button } from '../../ui/button'
 import { useFormContext } from '@/hooks/form-context'
 import { swift } from '@/lib/easing'
+import { CustomLoaderIcon } from '@/icons/loader'
 
 export default function SubmitButton({ label }: { label: string }) {
   const form = useFormContext()
@@ -10,10 +10,12 @@ export default function SubmitButton({ label }: { label: string }) {
   return (
     <MotionConfig transition={swift}>
       <form.Subscribe
-        selector={(state) => state.isSubmitting}
-        children={(isSubmitting) => (
+        selector={(state) => [state.isSubmitting, state.isValid]}
+        children={([isSubmitting, isValid]) => (
           <Button
             type="submit"
+            animate={{ x: !isValid ? [null, -5, 0, 5, 0] : undefined }}
+            transition={{ x: { duration: 0.2 } }}
             disabled={isSubmitting}
             className="overflow-y-clip"
           >
@@ -26,7 +28,7 @@ export default function SubmitButton({ label }: { label: string }) {
                   exit={{ opacity: 0, y: 25 }}
                   className="block"
                 >
-                  <Loader className="animate-spin" />
+                  <CustomLoaderIcon className="animate-spin duration-700" />
                 </motion.span>
               ) : (
                 <motion.span

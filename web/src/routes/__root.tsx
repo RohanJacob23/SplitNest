@@ -1,7 +1,6 @@
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
-import { Loader } from 'lucide-react'
 import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
 
 import type { QueryClient } from '@tanstack/react-query'
@@ -24,17 +23,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       <TanStackRouterDevtools />
 
       <TanStackQueryLayout />
-      <Toaster
-        richColors
-        closeButton
-        icons={{ loading: <Loader className="size-4 animate-spin" /> }}
-      />
+      <Toaster richColors closeButton />
     </ThemeProvider>
   ),
   notFoundComponent: Error404,
   errorComponent: ({ error }) => {
-    console.log(error)
-
     // Render an error message
     return (
       <main className="grid min-h-screen place-content-center space-y-2 text-center">

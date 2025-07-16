@@ -5,7 +5,9 @@ import {
   CreditCard,
   EllipsisVertical,
   LogOut,
+  Moon,
   Settings,
+  Sun,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -26,12 +28,15 @@ import {
 } from '@/components/ui/sidebar'
 import { authClient } from '@/lib/auth-client'
 import { getUser } from '@/query/get-user'
+import { useTheme } from './theme-provider'
 
 export function NavUser() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
   const { isMobile } = useSidebar()
+
+  const { theme, setTheme } = useTheme()
 
   const { data: user } = useSuspenseQuery(getUser)
 
@@ -100,6 +105,13 @@ export function NavUser() {
               <DropdownMenuItem disabled>
                 <CreditCard />
                 Billing
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              >
+                <Sun className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                <Moon className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                <span className="capitalize">{theme}</span>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/setting">

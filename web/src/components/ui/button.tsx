@@ -46,7 +46,7 @@ function Button({
   variant,
   size,
   asChild = false,
-  transition = swift,
+  transition,
   whileTap = { scale: 0.9 },
   ...props
 }: React.ComponentProps<typeof MotionButton> &
@@ -60,7 +60,7 @@ function Button({
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       whileTap={whileTap}
-      transition={transition}
+      transition={{ ...swift, ...transition }}
       {...props}
     />
   )
