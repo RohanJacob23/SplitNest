@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Calendar, CreditCard, DollarSign, Home, Search } from 'lucide-react'
+import { ChevronDown, CreditCard, DollarSign, Home } from 'lucide-react'
 import { NavUser } from './nav-user'
 import {
   Sidebar,
@@ -12,10 +12,18 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarSeparator,
 } from '@/components/ui/sidebar'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from './ui/collapsible'
 
-const items = [
+const applicationItems = [
   {
     title: 'Dashboard',
     url: '/dashboard',
@@ -26,17 +34,64 @@ const items = [
     url: '/subscription',
     icon: CreditCard,
   },
+]
+
+const spaces = [
   {
-    title: 'Calendar',
-    url: '#',
-    icon: Calendar,
-    disabled: true,
+    title: 'Space 1',
+    url: '/space/1',
   },
   {
-    title: 'Search',
-    url: '#',
-    icon: Search,
-    disabled: true,
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
+  },
+  {
+    title: 'Space 2',
+    url: '/space/2',
   },
 ]
 
@@ -64,14 +119,13 @@ export function AppSidebar() {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {applicationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <Link to={item.url} disabled={item.disabled}>
+                  <Link to={item.url}>
                     {({ isActive }) => (
                       <SidebarMenuButton
                         isActive={isActive}
                         className="cursor-pointer"
-                        disabled={item.disabled}
                         tooltip={item.title}
                       >
                         <item.icon />
@@ -84,6 +138,31 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <Collapsible defaultOpen className="group/collapsible">
+          <SidebarGroup>
+            <SidebarGroupLabel>Your Spaces</SidebarGroupLabel>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <CollapsibleTrigger>
+                    Spaces
+                    <ChevronDown className="transition-transformn ml-auto group-data-[state=open]/collapsible:rotate-180" />
+                  </CollapsibleTrigger>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+            <CollapsibleContent animate={{ height: '384px' }}>
+              <SidebarMenuSub>
+                {spaces.map((space, i) => (
+                  <SidebarMenuSubItem key={i}>
+                    <SidebarMenuSubButton>{space.title}</SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                ))}
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarGroup>
+        </Collapsible>
       </SidebarContent>
       <SidebarSeparator />
       <SidebarFooter>
