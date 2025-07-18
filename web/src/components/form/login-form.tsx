@@ -43,7 +43,7 @@ export default function LoginForm({
 
       await authClient.signIn.email(value, {
         onSuccess() {
-          queryClient.removeQueries(getUser)
+          queryClient.removeQueries()
           toast.success('Logged in successfully', { id: loadingToast })
           navigate({ to: '/dashboard' })
         },

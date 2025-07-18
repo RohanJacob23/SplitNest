@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { auth, type Auth } from "./auth";
 import { authMiddleware } from "./middleware/auth-middleware";
+import { spaces } from "./routes/spaces";
 
 const app = new Hono<{ Variables: Auth }>();
 
@@ -13,9 +14,7 @@ const router = app
   .on(["POST", "GET"], "/auth/*", (c) => {
     return auth.handler(c.req.raw);
   })
-  .get("/", (c) => {
-    return c.text("Hello Hono!");
-  });
+  .route("/spaces", spaces);
 
 export default {
   fetch: app.fetch,

@@ -6,6 +6,8 @@ import {
   DrawerTrigger,
   DrawerTitle,
   DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
 } from './drawer'
 import {
   Dialog,
@@ -14,6 +16,8 @@ import {
   DialogTrigger,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogClose,
 } from './dialog'
 import type { ComponentProps } from 'react'
 
@@ -75,6 +79,28 @@ function ModalDescription(
   else return <DialogDescription {...props} />
 }
 
+function ModalFooter(
+  props:
+    | ComponentProps<typeof DrawerFooter>
+    | ComponentProps<typeof DialogFooter>,
+) {
+  const isMobile = useIsMobile()
+
+  if (isMobile) return <DrawerFooter {...props} />
+  else return <DialogFooter {...props} />
+}
+
+function ModalClose(
+  props:
+    | ComponentProps<typeof DrawerClose>
+    | ComponentProps<typeof DialogClose>,
+) {
+  const isMobile = useIsMobile()
+
+  if (isMobile) return <DrawerClose {...props} />
+  else return <DialogClose {...props} />
+}
+
 export {
   Modal,
   ModalTrigger,
@@ -82,4 +108,6 @@ export {
   ModalHeader,
   ModalTitle,
   ModalDescription,
+  ModalFooter,
+  ModalClose,
 }

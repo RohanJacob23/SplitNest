@@ -18,6 +18,7 @@ import { Route as ProtectedDashboardLayoutRouteRouteImport } from './routes/_pro
 import { Route as ProtectedDashboardLayoutSubscriptionRouteImport } from './routes/_protected/_dashboard-layout/subscription'
 import { Route as ProtectedDashboardLayoutSettingRouteImport } from './routes/_protected/_dashboard-layout/setting'
 import { Route as ProtectedDashboardLayoutDashboardRouteImport } from './routes/_protected/_dashboard-layout/dashboard'
+import { Route as ProtectedDashboardLayoutSpacesIdRouteImport } from './routes/_protected/_dashboard-layout/spaces.$id'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
@@ -66,6 +67,12 @@ const ProtectedDashboardLayoutDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => ProtectedDashboardLayoutRouteRoute,
   } as any)
+const ProtectedDashboardLayoutSpacesIdRoute =
+  ProtectedDashboardLayoutSpacesIdRouteImport.update({
+    id: '/spaces/$id',
+    path: '/spaces/$id',
+    getParentRoute: () => ProtectedDashboardLayoutRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof ProtectedDashboardLayoutDashboardRoute
   '/setting': typeof ProtectedDashboardLayoutSettingRoute
   '/subscription': typeof ProtectedDashboardLayoutSubscriptionRoute
+  '/spaces/$id': typeof ProtectedDashboardLayoutSpacesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -84,6 +92,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof ProtectedDashboardLayoutDashboardRoute
   '/setting': typeof ProtectedDashboardLayoutSettingRoute
   '/subscription': typeof ProtectedDashboardLayoutSubscriptionRoute
+  '/spaces/$id': typeof ProtectedDashboardLayoutSpacesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,6 +105,7 @@ export interface FileRoutesById {
   '/_protected/_dashboard-layout/dashboard': typeof ProtectedDashboardLayoutDashboardRoute
   '/_protected/_dashboard-layout/setting': typeof ProtectedDashboardLayoutSettingRoute
   '/_protected/_dashboard-layout/subscription': typeof ProtectedDashboardLayoutSubscriptionRoute
+  '/_protected/_dashboard-layout/spaces/$id': typeof ProtectedDashboardLayoutSpacesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/setting'
     | '/subscription'
+    | '/spaces/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/setting'
     | '/subscription'
+    | '/spaces/$id'
   id:
     | '__root__'
     | '/'
@@ -127,6 +139,7 @@ export interface FileRouteTypes {
     | '/_protected/_dashboard-layout/dashboard'
     | '/_protected/_dashboard-layout/setting'
     | '/_protected/_dashboard-layout/subscription'
+    | '/_protected/_dashboard-layout/spaces/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -200,6 +213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardLayoutDashboardRouteImport
       parentRoute: typeof ProtectedDashboardLayoutRouteRoute
     }
+    '/_protected/_dashboard-layout/spaces/$id': {
+      id: '/_protected/_dashboard-layout/spaces/$id'
+      path: '/spaces/$id'
+      fullPath: '/spaces/$id'
+      preLoaderRoute: typeof ProtectedDashboardLayoutSpacesIdRouteImport
+      parentRoute: typeof ProtectedDashboardLayoutRouteRoute
+    }
   }
 }
 
@@ -207,6 +227,7 @@ interface ProtectedDashboardLayoutRouteRouteChildren {
   ProtectedDashboardLayoutDashboardRoute: typeof ProtectedDashboardLayoutDashboardRoute
   ProtectedDashboardLayoutSettingRoute: typeof ProtectedDashboardLayoutSettingRoute
   ProtectedDashboardLayoutSubscriptionRoute: typeof ProtectedDashboardLayoutSubscriptionRoute
+  ProtectedDashboardLayoutSpacesIdRoute: typeof ProtectedDashboardLayoutSpacesIdRoute
 }
 
 const ProtectedDashboardLayoutRouteRouteChildren: ProtectedDashboardLayoutRouteRouteChildren =
@@ -216,6 +237,8 @@ const ProtectedDashboardLayoutRouteRouteChildren: ProtectedDashboardLayoutRouteR
     ProtectedDashboardLayoutSettingRoute: ProtectedDashboardLayoutSettingRoute,
     ProtectedDashboardLayoutSubscriptionRoute:
       ProtectedDashboardLayoutSubscriptionRoute,
+    ProtectedDashboardLayoutSpacesIdRoute:
+      ProtectedDashboardLayoutSpacesIdRoute,
   }
 
 const ProtectedDashboardLayoutRouteRouteWithChildren =

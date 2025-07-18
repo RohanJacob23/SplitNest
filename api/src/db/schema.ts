@@ -9,6 +9,7 @@ import {
   jsonb,
   date,
 } from "drizzle-orm/pg-core";
+import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 
 // ----------------------
 // Enums
@@ -167,3 +168,6 @@ export const verification = pgTable("verification", {
     () => /* @__PURE__ */ new Date()
   ),
 });
+
+export const spacesInsertSchema = createInsertSchema(spaces);
+export const spacesUpdateSchema = createUpdateSchema(spaces);

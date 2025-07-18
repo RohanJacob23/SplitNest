@@ -3,8 +3,15 @@ import { Button } from '../../ui/button'
 import { useFormContext } from '@/hooks/form-context'
 import { swift } from '@/lib/easing'
 import { CustomLoaderIcon } from '@/icons/loader'
+import { cn } from '@/lib/utils'
 
-export default function SubmitButton({ label }: { label: string }) {
+export default function SubmitButton({
+  label,
+  className,
+}: {
+  label: string
+  className?: string
+}) {
   const form = useFormContext()
 
   return (
@@ -17,7 +24,7 @@ export default function SubmitButton({ label }: { label: string }) {
             animate={{ x: !isValid ? [null, -5, 0, 5, 0] : undefined }}
             transition={{ x: { duration: 0.2 } }}
             disabled={isSubmitting}
-            className="overflow-y-clip"
+            className={cn('overflow-y-clip', className)}
           >
             <AnimatePresence initial={false} mode="popLayout">
               {isSubmitting ? (

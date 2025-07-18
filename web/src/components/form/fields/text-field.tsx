@@ -20,7 +20,9 @@ export default function TextField({
         value={field.state.value}
         aria-invalid={!field.state.meta.isValid}
         onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={field.handleBlur}
         className={cn('peer', className)}
+        // disabled={field.state.meta.}
         {...props}
       />
       {!field.state.meta.isValid &&

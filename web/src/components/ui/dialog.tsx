@@ -4,7 +4,7 @@ import { XIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'motion/react'
-import { elegant, swift } from '@/lib/easing'
+import { swift } from '@/lib/easing'
 
 const DialogContext = React.createContext<{ open: boolean }>({
   open: false,
@@ -117,10 +117,11 @@ function DialogContent({
             {...props}
           >
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95, transition: swift }}
-              animate={{ opacity: 1, y: 0, scale: 1, transition: elegant }}
-              exit={{ opacity: 0, y: 20, scale: 0.95, transition: swift }}
+              initial={{ opacity: 0, y: '-40%', scale: 0.95 }}
+              animate={{ opacity: 1, y: '-50%', scale: 1 }}
+              exit={{ opacity: 0, y: '-40%', scale: 0.95 }}
               style={{ x: '-50%', y: '-50%' }}
+              transition={swift}
             >
               {children}
               {showCloseButton && (

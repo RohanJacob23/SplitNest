@@ -46,7 +46,7 @@ export default function SignUpForm({
 
       await authClient.signUp.email(value, {
         onSuccess() {
-          queryClient.removeQueries(getUser)
+          queryClient.removeQueries()
           toast.success('Signed up successfully', { id: loadingToast })
           navigate({ to: '/dashboard', reloadDocument: true })
         },

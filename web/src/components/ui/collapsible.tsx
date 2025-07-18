@@ -83,7 +83,7 @@ function CollapsibleContent({
           animate={animate}
           exit={{ height: '0px' }}
           transition={swift}
-          className={cn('overflow-y-scroll', className)}
+          className={cn('max-h-96 overflow-y-auto', className)}
           {...props}
         />
       )}
