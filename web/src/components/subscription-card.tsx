@@ -1,128 +1,69 @@
-import { Card, CardContent, CardHeader } from './ui/card'
-import { Badge } from './ui/badge'
-import { Button } from './ui/button'
-import { Calendar, DollarSign, Edit, Trash2, Users } from 'lucide-react'
+// components/SubscriptionCard.tsx
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Pencil, Trash2 } from 'lucide-react'
 import type { SubscriptionProps } from '@/routes/_protected/_dashboard-layout/subscription'
 
-const getDaysUntilDue = (dueDate: string) => {
-  const today = new Date()
-  const due = new Date(dueDate)
-  const diffTime = due.getTime() - today.getTime()
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-  return diffDays
+const statusVariants = {
+  Paid: 'bg-green-100 text-green-600',
+  Unpaid: 'bg-red-100 text-red-600',
+  Pending: 'bg-yellow-100 text-yellow-600',
 }
-const getStatusColor = (status: string) => {
-  return status === 'active'
-    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-    : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
-}
-const getCategoryColor = (category: string) => {
-  const colors = {
-    Entertainment: 'bg-secondary text-secondary-foreground',
-    Utilities: 'bg-secondary text-secondary-foreground',
-    Food: 'bg-secondary text-secondary-foreground',
-    Insurance: 'bg-secondary text-secondary-foreground',
-  }
-  return (
-    colors[category as keyof typeof colors] ||
-    'bg-secondary text-secondary-foreground'
-  )
-}
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-  })
-}
+
 export default function SubscriptionCard({
   icon: Icon,
-  category,
   name,
   amount,
   dueDate,
   paidBy,
-  splitPercentage,
+  status,
+  // split,
 }: SubscriptionProps) {
-  const daysUntilDue = getDaysUntilDue(dueDate)
   return (
-    <Card className="transition-all duration-300 hover:shadow-lg">
-      <CardHeader className="pb-4">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-muted rounded-lg p-2">
-              <Icon className="text-muted-foreground h-6 w-6" />
-            </div>
-            <div>
-              <h3 className="font-semibold">{name}</h3>
-              <Badge
-                variant="outline"
-                className={`text-xs ${getCategoryColor(category)}`}
-              >
-                {category}
-              </Badge>
-            </div>
+    <Card className="shadow-sm transition-all duration-300 hover:shadow-md">
+      <CardContent className="space-y-2.5">
+        <div className="flex items-center justify-between">
+          <div className="text-3xl">
+            <Icon />
           </div>
-          <div className="flex gap-1">
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-              <Edit className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
+          <Badge variant="secondary">{status}</Badge>
         </div>
-      </CardHeader>
 
-      <CardContent className="pt-0">
-        <div className="space-y-4">
-          {/* Amount and Status */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4" />
-              <span className="text-2xl font-bold">${amount}</span>
-            </div>
-            <Badge className={getStatusColor(status)}>{status}</Badge>
-          </div>
+        <div>
+          <h2 className="text-lg font-semibold">{name}</h2>
+          <p className="text-muted-foreground text-sm">{amount}</p>
+        </div>
 
-          {/* Due Date */}
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              <span>Due {formatDate(dueDate)}</span>
-            </div>
-            <span
-              className={`font-medium ${
-                daysUntilDue <= 3
-                  ? 'text-red-600'
-                  : daysUntilDue <= 7
-                    ? 'text-orange-600'
-                    : 'text-gray-600'
-              }`}
-            >
-              {daysUntilDue > 0 ? `${daysUntilDue} days` : 'Overdue'}
-            </span>
-          </div>
+        <div className="text-muted-foreground space-y-1 text-sm">
+          <p>
+            <span className="font-medium">Due:</span> {dueDate}
+          </p>
+          <p>
+            <span className="font-medium">Paid By:</span> {paidBy}
+          </p>
+          <p>
+            <span className="font-medium">Split:</span> {0}
+          </p>
+        </div>
 
-          {/* Paid By and Split */}
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              <span>Paid by {paidBy}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="h-2 w-16 overflow-hidden rounded-full">
-                <div
-                  className="bg-primary h-full rounded-full"
-                  style={{
-                    width: `${splitPercentage}%`,
-                  }}
-                />
-              </div>
-              <span className="ml-1 text-xs font-medium">
-                {splitPercentage}%
-              </span>
-            </div>
-          </div>
+        <div className="flex gap-2 pt-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-1"
+          >
+            <Pencil size={14} />
+            Edit
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            className="flex items-center gap-1"
+          >
+            <Trash2 size={14} />
+            Delete
+          </Button>
         </div>
       </CardContent>
     </Card>
