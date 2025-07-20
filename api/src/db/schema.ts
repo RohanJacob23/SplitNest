@@ -61,7 +61,7 @@ export const spaceMembers = pgTable("space_members", {
   }),
   userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
   role: roleEnum("role").notNull().default("admin"),
-  joinedAt: timestamp("joined_at").notNull(),
+  joinedAt: timestamp("joined_at").notNull().defaultNow(),
 });
 
 export const subscriptions = pgTable("subscriptions", {

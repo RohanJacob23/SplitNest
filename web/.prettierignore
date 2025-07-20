@@ -3,3 +3,4 @@ pnpm-lock.yaml
 yarn.lock
 dist
 src/routeTree.gen.ts
+stats.html

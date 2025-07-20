@@ -16,7 +16,7 @@ import { useAppForm } from '@/hooks/form'
 import { GithubIcon } from '@/icons/logo/github'
 import { GoogleIcon } from '@/icons/logo/google'
 import { authClient } from '@/lib/auth-client'
-import { getUser, sleep } from '@/query/get-user'
+import { sleep } from '@/query/get-user'
 
 const loginFormSchema = z.object({
   email: z.email(),

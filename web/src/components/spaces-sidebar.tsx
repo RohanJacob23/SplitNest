@@ -37,18 +37,20 @@ import { getUser, sleep } from '@/query/get-user'
 import { toast } from 'sonner'
 import { client } from '@/lib/hono-api'
 import { useState } from 'react'
-import { Input } from './ui/input'
-import { Label } from './ui/label'
 import { useAppForm } from '@/hooks/form'
 import { z } from 'zod/v4'
 
-type DialogState = { type: 'edit' | 'delete'; space: Space[number] } | null
+type DialogState = {
+  type: 'edit' | 'delete'
+  spaceMember: Space[number]
+} | null
 
 export default function SpacesSidebar() {
   const [dialog, setDialog] = useState<DialogState>(null)
 
-  const { data: spaces } = useSuspenseQuery(getSpaces)
-  const { data: user } = useSuspenseQuery(getUser)
+  const { data } = useSuspenseQuery(getSpaces)
+
+  console.log(data)
 
   return (
     <Collapsible defaultOpen className="group/collapsible">
@@ -64,59 +66,70 @@ export default function SpacesSidebar() {
         </SidebarMenuItem>
       </SidebarMenu>
       <CollapsibleContent>
-        <SidebarMenuSub>
-          {spaces.map((space, i) => (
-            <SidebarMenuSubItem key={i}>
-              <Link to="/spaces/$id" params={{ id: space.id.toString() }}>
-                {({ isActive }) => (
-                  <SidebarMenuSubButton isActive={isActive}>
-                    {space.name}
-                  </SidebarMenuSubButton>
-                )}
-              </Link>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuAction>
-                    <MoreHorizontal />
-                    <span className="sr-only">Add Project</span>
-                  </SidebarMenuAction>
-                </DropdownMenuTrigger>
+        {data.length > 0 ? (
+          <SidebarMenuSub>
+            {data.map((spaceMember, i) => (
+              <SidebarMenuSubItem key={i}>
+                <Link
+                  to="/spaces/$id"
+                  params={{ id: spaceMember.spaceId!.toString() }}
+                >
+                  {({ isActive }) => (
+                    <SidebarMenuSubButton isActive={isActive}>
+                      {spaceMember.space?.name}
+                    </SidebarMenuSubButton>
+                  )}
+                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <SidebarMenuAction>
+                      <MoreHorizontal />
+                      <span className="sr-only">Add Project</span>
+                    </SidebarMenuAction>
+                  </DropdownMenuTrigger>
 
-                <DropdownMenuContent side="right" align="start">
-                  <DropdownMenuItem
-                    onClick={() => setDialog({ type: 'edit', space })}
-                    disabled={user?.id !== space.ownerId}
-                  >
-                    Edit Project
-                  </DropdownMenuItem>
+                  <DropdownMenuContent side="right" align="start">
+                    <DropdownMenuItem
+                      onClick={() => setDialog({ type: 'edit', spaceMember })}
+                      disabled={spaceMember.role !== 'admin'}
+                    >
+                      Edit Project
+                    </DropdownMenuItem>
 
-                  <DropdownMenuItem
-                    onClick={() => setDialog({ type: 'delete', space })}
-                    disabled={user?.id !== space.ownerId}
-                  >
-                    Delete Project
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuSubItem>
-          ))}
-          {dialog?.type === 'edit' && (
-            <EditDialog
-              open={true}
-              onOpenChange={() => setDialog(null)}
-              space={dialog.space}
-            />
-          )}
+                    <DropdownMenuItem
+                      onClick={() => setDialog({ type: 'delete', spaceMember })}
+                      disabled={spaceMember.role !== 'admin'}
+                    >
+                      Delete Project
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </SidebarMenuSubItem>
+            ))}
+            {dialog?.type === 'edit' && (
+              <EditDialog
+                open={true}
+                onOpenChange={() => setDialog(null)}
+                spaceMember={dialog.spaceMember}
+              />
+            )}
 
-          {/* Single Delete Dialog */}
-          {dialog?.type === 'delete' && (
-            <DeleteDialog
-              open={true}
-              onOpenChange={() => setDialog(null)}
-              space={dialog.space}
-            />
-          )}
-        </SidebarMenuSub>
+            {/* Single Delete Dialog */}
+            {dialog?.type === 'delete' && (
+              <DeleteDialog
+                open={true}
+                onOpenChange={() => setDialog(null)}
+                spaceMember={dialog.spaceMember}
+              />
+            )}
+          </SidebarMenuSub>
+        ) : (
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton>You have no spaces</SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        )}
       </CollapsibleContent>
     </Collapsible>
   )
@@ -125,14 +138,14 @@ export default function SpacesSidebar() {
 interface DialogProps {
   open: boolean
   onOpenChange: () => void
-  space: Space[number]
+  spaceMember: Space[number]
 }
 
-const EditDialog = ({ space, ...props }: DialogProps) => {
+const EditDialog = ({ spaceMember, ...props }: DialogProps) => {
   const queryClient = useQueryClient()
 
   const form = useAppForm({
-    defaultValues: { name: space.name },
+    defaultValues: { name: spaceMember.space?.name },
     validators: {
       onSubmit: z.object({
         name: z.string().min(1, { error: 'Name is required' }),
@@ -146,8 +159,10 @@ const EditDialog = ({ space, ...props }: DialogProps) => {
         return
       }
 
+      if (!spaceMember.spaceId) return
+
       const res = await client.spaces[':id'].$patch({
-        param: { id: space.id.toString() },
+        param: { id: spaceMember.spaceId.toString() },
         json: value,
       })
 
@@ -196,14 +211,16 @@ const EditDialog = ({ space, ...props }: DialogProps) => {
   )
 }
 
-const DeleteDialog = ({ space: { id }, ...props }: DialogProps) => {
+const DeleteDialog = ({ spaceMember: { spaceId }, ...props }: DialogProps) => {
   const queryClient = useQueryClient()
 
   const handleDelete = () => {
+    if (!spaceId) return
+
     toast.promise(
       async () => {
         const res = await client.spaces[':id'].$delete({
-          param: { id: id.toString() },
+          param: { id: spaceId.toString() },
         })
         await sleep(1500)
         return res.json()

@@ -3,10 +3,14 @@ import { db } from "../db";
 import type { Auth } from "../auth";
 import { HTTPException } from "hono/http-exception";
 import { zValidator } from "@hono/zod-validator";
-import { spacesInsertSchema, spacesUpdateSchema } from "../db/schema";
+import {
+  spaceMembers,
+  spacesInsertSchema,
+  spacesUpdateSchema,
+} from "../db/schema";
 import { spaces as spacesDb } from "../db/schema";
 import { z } from "zod/v4";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 
 export const spaces = new Hono<{ Variables: Auth }>()
   .get("/", async (c) => {
@@ -15,7 +19,10 @@ export const spaces = new Hono<{ Variables: Auth }>()
     if (!user)
       throw new HTTPException(401, { message: "Unauthorized request" });
 
-    const result = await db.query.spaces.findMany();
+    const result = await db.query.spaceMembers.findMany({
+      where: eq(spaceMembers.userId, user.id),
+      with: { space: true },
+    });
 
     return c.json(result);
   })
@@ -30,10 +37,17 @@ export const spaces = new Hono<{ Variables: Auth }>()
       if (!user)
         throw new HTTPException(401, { message: "Unauthorized request" });
 
-      await db.insert(spacesDb).values({
-        ...body,
-        ownerId: user.id,
-      });
+      const [space] = await db
+        .insert(spacesDb)
+        .values({
+          ...body,
+          ownerId: user.id,
+        })
+        .returning();
+
+      await db
+        .insert(spaceMembers)
+        .values({ role: "admin", spaceId: space.id, userId: user.id });
 
       return c.json({ message: "Space created successfully" });
     }

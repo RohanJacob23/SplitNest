@@ -5,12 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import { Pencil, Trash2 } from 'lucide-react'
 import type { SubscriptionProps } from '@/routes/_protected/_dashboard-layout/subscription'
 
-const statusVariants = {
-  Paid: 'bg-green-100 text-green-600',
-  Unpaid: 'bg-red-100 text-red-600',
-  Pending: 'bg-yellow-100 text-yellow-600',
-}
-
 export default function SubscriptionCard({
   icon: Icon,
   name,

@@ -1,12 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import {
-  ChevronDown,
-  CreditCard,
-  DollarSign,
-  Home,
-  LayoutGrid,
-  Plus,
-} from 'lucide-react'
+import { CreditCard, DollarSign, Home, Plus } from 'lucide-react'
 import { NavUser } from './nav-user'
 import {
   Sidebar,
@@ -20,16 +13,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarSeparator,
 } from '@/components/ui/sidebar'
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from './ui/collapsible'
 import {
   Modal,
   ModalContent,
@@ -53,33 +38,6 @@ const applicationItems = [
     title: 'Subscription',
     url: '/subscription',
     icon: CreditCard,
-  },
-]
-
-const spaces = [
-  {
-    title: 'Space 1',
-    url: '/space/1',
-  },
-  {
-    title: 'Space 2',
-    url: '/space/2',
-  },
-  {
-    title: 'Space 2',
-    url: '/space/2',
-  },
-  {
-    title: 'Space 2',
-    url: '/space/2',
-  },
-  {
-    title: 'Space 2',
-    url: '/space/2',
-  },
-  {
-    title: 'Space 2',
-    url: '/space/2',
   },
 ]
 

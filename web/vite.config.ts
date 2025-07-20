@@ -2,6 +2,7 @@ import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 
@@ -11,14 +12,16 @@ export default defineConfig({
     tanstackRouter({ autoCodeSplitting: true }),
     viteReact(),
     tailwindcss(),
+    visualizer({ open: true }),
   ],
   build: {
     rollupOptions: {
       output: {
         manualChunks: {
           gsap: ['gsap'],
-          motion: ['motion'],
+          motion: ['motion/react'],
           zod: ['zod/v4'],
+          lucidReact: ['lucide-react'],
         },
       },
     },
