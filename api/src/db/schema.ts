@@ -168,6 +168,6 @@ export const verification = pgTable("verification", {
     () => /* @__PURE__ */ new Date()
   ),
 });
-
+export const invitesInsertSchema = createInsertSchema(invites);
 export const spacesInsertSchema = createInsertSchema(spaces);
 export const spacesUpdateSchema = createUpdateSchema(spaces);
