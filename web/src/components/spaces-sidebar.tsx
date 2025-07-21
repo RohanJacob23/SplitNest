@@ -50,8 +50,6 @@ export default function SpacesSidebar() {
 
   const { data } = useSuspenseQuery(getSpaces)
 
-  console.log(data)
-
   return (
     <Collapsible defaultOpen className="group/collapsible">
       <SidebarMenu>
@@ -211,11 +209,19 @@ const EditDialog = ({ spaceMember, ...props }: DialogProps) => {
   )
 }
 
-const DeleteDialog = ({ spaceMember: { spaceId }, ...props }: DialogProps) => {
+const DeleteDialog = ({
+  spaceMember: { spaceId, role },
+  ...props
+}: DialogProps) => {
   const queryClient = useQueryClient()
 
   const handleDelete = () => {
     if (!spaceId) return
+
+    if (role !== 'admin') {
+      toast.warning('You must be an admin to delete a space')
+      return
+    }
 
     toast.promise(
       async () => {

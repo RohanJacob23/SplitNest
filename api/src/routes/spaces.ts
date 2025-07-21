@@ -10,7 +10,7 @@ import {
 } from "../db/schema";
 import { spaces as spacesDb } from "../db/schema";
 import { z } from "zod/v4";
-import { eq, or } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export const spaces = new Hono<{ Variables: Auth }>()
   .get("/", async (c) => {
@@ -105,5 +105,53 @@ export const spaces = new Hono<{ Variables: Auth }>()
       await db.delete(spacesDb).where(eq(spacesDb.id, id));
 
       return c.json({ message: "Space deleted successfully" });
+    }
+  )
+  .get(
+    "/:spaceId/members",
+    zValidator("param", z.object({ spaceId: z.coerce.number() })),
+    async (c) => {
+      const { spaceId } = c.req.valid("param");
+
+      const user = c.get("user");
+
+      if (!user)
+        throw new HTTPException(401, { message: "Unauthorized request" });
+
+      const result = await db.query.spaceMembers.findMany({
+        where: eq(spaceMembers.spaceId, spaceId),
+        with: { user: true },
+      });
+
+      return c.json(result);
+    }
+  )
+  .delete(
+    ":spaceId/members/:userId",
+    zValidator(
+      "param",
+      z.object({
+        spaceId: z.coerce.number(),
+        userId: z.string(),
+      })
+    ),
+    async (c) => {
+      const { spaceId, userId } = c.req.valid("param");
+
+      const user = c.get("user");
+
+      if (!user)
+        throw new HTTPException(401, { message: "Unauthorized request" });
+
+      await db
+        .delete(spaceMembers)
+        .where(
+          and(
+            eq(spaceMembers.spaceId, spaceId),
+            eq(spaceMembers.userId, userId)
+          )
+        );
+
+      return c.json({ message: "Member removed successfully" });
     }
   );

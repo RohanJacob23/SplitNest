@@ -1,5 +1,6 @@
 import CommingSoonCard from '@/components/comming-soon-card'
 import Error404 from '@/components/pages/error'
+import MembersContent from '@/components/tabs-content/members-content'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -11,13 +12,19 @@ import {
 } from '@/components/ui/card'
 import {
   Modal,
+  ModalClose,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalTitle,
   ModalTrigger,
 } from '@/components/ui/modal'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useAppForm } from '@/hooks/form'
+import { getSpaceMembers } from '@/query/get-space-members'
 import { getSpace } from '@/query/get-spaces'
+import { sleep } from '@/query/get-user'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, notFound } from '@tanstack/react-router'
 import {
@@ -29,12 +36,15 @@ import {
   UserPlus,
   Users,
 } from 'lucide-react'
+import { Suspense } from 'react'
+import { z } from 'zod/v4'
 
 export const Route = createFileRoute(
   '/_protected/_dashboard-layout/spaces/$id',
 )({
   component: RouteComponent,
   loader: async ({ context, params: { id } }) => {
+    context.queryClient.prefetchQuery(getSpaceMembers(id))
     const data = await context.queryClient.ensureQueryData(getSpace(id))
 
     if (!data) throw notFound()
@@ -46,6 +56,15 @@ function RouteComponent() {
   const { id } = Route.useParams()
 
   const { data: space } = useSuspenseQuery(getSpace(id))
+
+  const form = useAppForm({
+    defaultValues: { email: '' },
+    validators: { onSubmit: z.object({ email: z.email() }) },
+    onSubmit: async ({ value }) => {
+      await sleep(1500)
+      console.log(value)
+    },
+  })
 
   return (
     <section className="mx-auto w-full max-w-7xl space-y-4 p-4">
@@ -74,7 +93,29 @@ function RouteComponent() {
                 <ModalHeader>
                   <ModalTitle>Invite Member</ModalTitle>
                 </ModalHeader>
-                {/* TODO: Add invite form */}
+                <form
+                  className="space-y-4"
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    form.handleSubmit()
+                  }}
+                >
+                  <form.AppField
+                    name="email"
+                    children={(field) => <field.TextField label="Email" />}
+                  />
+
+                  <ModalFooter>
+                    <ModalClose asChild>
+                      <Button variant="outline" className="flex-1">
+                        Cancel
+                      </Button>
+                    </ModalClose>
+                    <form.AppForm>
+                      <form.SubmitButton label="Invite" className="flex-1" />
+                    </form.AppForm>
+                  </ModalFooter>
+                </form>
               </ModalContent>
             </Modal>
           </CardAction>
@@ -141,7 +182,9 @@ function RouteComponent() {
           <CommingSoonCard />
         </TabsContent>
         <TabsContent value="members">
-          <CommingSoonCard />
+          <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+            <MembersContent id={id} />
+          </Suspense>
         </TabsContent>
       </Tabs>
     </section>
@@ -150,7 +193,7 @@ function RouteComponent() {
 
 const OverviewTabContent = () => {
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
       {/* Balances */}
       <Card>
         <CardHeader>

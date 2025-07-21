@@ -6,7 +6,7 @@
     "migrate": "drizzle-kit migrate",
     "push": "drizzle-kit push",
     "pull": "drizzle-kit pull",
-    "studio": "drizzle-kit studio --port 3000"
+    "studio": "drizzle-kit studio --port 3001"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.1",
