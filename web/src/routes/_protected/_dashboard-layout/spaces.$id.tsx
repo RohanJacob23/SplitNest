@@ -22,9 +22,10 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAppForm } from '@/hooks/form'
+import { client } from '@/lib/hono-api'
 import { getSpaceMembers } from '@/query/get-space-members'
 import { getSpace } from '@/query/get-spaces'
-import { sleep } from '@/query/get-user'
+import { getUser } from '@/query/get-user'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, notFound } from '@tanstack/react-router'
 import {
@@ -37,6 +38,7 @@ import {
   Users,
 } from 'lucide-react'
 import { Suspense } from 'react'
+import { toast } from 'sonner'
 import { z } from 'zod/v4'
 
 export const Route = createFileRoute(
@@ -56,20 +58,41 @@ function RouteComponent() {
   const { id } = Route.useParams()
 
   const { data: space } = useSuspenseQuery(getSpace(id))
+  const { data: user } = useSuspenseQuery(getUser)
 
   const form = useAppForm({
     defaultValues: { email: '' },
     validators: { onSubmit: z.object({ email: z.email() }) },
     onSubmit: async ({ value }) => {
-      await sleep(1500)
-      console.log(value)
+      if (user?.email === value.email) {
+        toast.warning('You cannot invite yourself')
+        return
+      }
+
+      const loadingToast = toast.loading('Sending invite...')
+
+      const res = await client.invites[':spaceId'].$post({
+        json: value,
+        param: { spaceId: id },
+      })
+
+      if (!res.ok) {
+        toast.error(res.statusText, { id: loadingToast })
+        return
+      }
+
+      const data = await res.json()
+
+      toast.success(data.message, { id: loadingToast })
+
+      form.reset()
     },
   })
 
   return (
     <section className="mx-auto w-full max-w-7xl space-y-4 p-4">
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-col justify-between gap-2 sm:flex-row">
           <div className="flex gap-4">
             <div className="bg-primary-100 dark:bg-primary-950 flex size-8 items-center justify-center rounded-lg">
               <Users className="text-primary size-4" />
@@ -77,7 +100,7 @@ function RouteComponent() {
 
             <CardTitle className="text-2xl capitalize">{space?.name}</CardTitle>
           </div>
-          <CardAction className="row-start-2 flex items-center gap-4 justify-self-start">
+          <CardAction data-slot="action" className="flex items-center gap-4">
             <Button variant="outline" size="sm" disabled>
               <Settings />
               Settings

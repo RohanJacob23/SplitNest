@@ -23,7 +23,13 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       <TanStackRouterDevtools />
 
       <TanStackQueryLayout />
-      <Toaster richColors closeButton />
+      <Toaster
+        richColors
+        closeButton
+        toastOptions={{
+          style: { paddingBlock: '0.75rem', paddingInline: '1rem' },
+        }}
+      />
     </ThemeProvider>
   ),
   notFoundComponent: Error404,

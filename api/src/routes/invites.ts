@@ -22,8 +22,15 @@ export const invites = new Hono<{ Variables: Auth }>()
 
       const user = c.get("user");
 
-      // if (!user)
-      //   throw new HTTPException(401, { message: "Unauthorized request" });
+      if (!user)
+        throw new HTTPException(401, { message: "Unauthorized request" });
+
+      // EDGE CASES:-
+      // TODO: check whether the user already exists or not in the db
+      // if yes then no need to send invite else send the invite
+      // or if that user is already a member of the space then no need to send invite
+      // or if there is an already invite to that user then no need to send invite again
+      // or if the user is present in user table or not
 
       const token = crypto.randomUUID();
 
@@ -40,6 +47,7 @@ export const invites = new Hono<{ Variables: Auth }>()
 
     const result = await db.query.invites.findMany({
       where: eq(invitesDb.email, user.email),
+      with: { space: { with: { owner: true } } },
     });
     return c.json(result);
   })
@@ -72,6 +80,8 @@ export const invites = new Hono<{ Variables: Auth }>()
         spaceId: invite.spaceId,
         role: "member",
       });
+
+      await db.delete(invitesDb).where(eq(invitesDb.id, invite.id));
 
       return c.json({ message: "Invite accepted successfully" });
     }

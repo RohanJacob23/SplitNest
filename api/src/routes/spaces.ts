@@ -65,10 +65,17 @@ export const spaces = new Hono<{ Variables: Auth }>()
 
       const result = await db.query.spaces.findFirst({
         where: eq(spacesDb.id, id),
-        with: { owner: true },
+        with: { owner: true, members: true },
       });
 
-      if (!result) throw new HTTPException(404, { message: "Space not found" });
+      // is user a member of the space
+      const isUserMember = result?.members.some(
+        (member) => member.userId === user.id
+      );
+
+      // if space not found or user is not a member
+      if (!result || !isUserMember)
+        throw new HTTPException(404, { message: "Space not found" });
 
       return c.json(result);
     }
@@ -120,37 +127,24 @@ export const spaces = new Hono<{ Variables: Auth }>()
 
       const result = await db.query.spaceMembers.findMany({
         where: eq(spaceMembers.spaceId, spaceId),
-        with: { user: true },
+        with: { user: true, space: true },
       });
 
       return c.json(result);
     }
   )
   .delete(
-    ":spaceId/members/:userId",
-    zValidator(
-      "param",
-      z.object({
-        spaceId: z.coerce.number(),
-        userId: z.string(),
-      })
-    ),
+    "/members/:memberId",
+    zValidator("param", z.object({ memberId: z.coerce.number() })),
     async (c) => {
-      const { spaceId, userId } = c.req.valid("param");
+      const { memberId } = c.req.valid("param");
 
       const user = c.get("user");
 
       if (!user)
         throw new HTTPException(401, { message: "Unauthorized request" });
 
-      await db
-        .delete(spaceMembers)
-        .where(
-          and(
-            eq(spaceMembers.spaceId, spaceId),
-            eq(spaceMembers.userId, userId)
-          )
-        );
+      await db.delete(spaceMembers).where(eq(spaceMembers.id, memberId));
 
       return c.json({ message: "Member removed successfully" });
     }

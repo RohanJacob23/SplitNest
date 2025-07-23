@@ -1,6 +1,7 @@
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import {
+  Bell,
   CircleUser,
   CreditCard,
   EllipsisVertical,
@@ -98,13 +99,11 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem disabled>
-                <CircleUser />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>
-                <CreditCard />
-                Billing
+              <DropdownMenuItem asChild>
+                <Link to="/notification">
+                  <Bell />
+                  Notifications
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}

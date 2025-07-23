@@ -17,6 +17,7 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ProtectedDashboardLayoutRouteRouteImport } from './routes/_protected/_dashboard-layout/route'
 import { Route as ProtectedDashboardLayoutSubscriptionRouteImport } from './routes/_protected/_dashboard-layout/subscription'
 import { Route as ProtectedDashboardLayoutSettingRouteImport } from './routes/_protected/_dashboard-layout/setting'
+import { Route as ProtectedDashboardLayoutNotificationRouteImport } from './routes/_protected/_dashboard-layout/notification'
 import { Route as ProtectedDashboardLayoutDashboardRouteImport } from './routes/_protected/_dashboard-layout/dashboard'
 import { Route as ProtectedDashboardLayoutSpacesIdRouteImport } from './routes/_protected/_dashboard-layout/spaces.$id'
 
@@ -61,6 +62,12 @@ const ProtectedDashboardLayoutSettingRoute =
     path: '/setting',
     getParentRoute: () => ProtectedDashboardLayoutRouteRoute,
   } as any)
+const ProtectedDashboardLayoutNotificationRoute =
+  ProtectedDashboardLayoutNotificationRouteImport.update({
+    id: '/notification',
+    path: '/notification',
+    getParentRoute: () => ProtectedDashboardLayoutRouteRoute,
+  } as any)
 const ProtectedDashboardLayoutDashboardRoute =
   ProtectedDashboardLayoutDashboardRouteImport.update({
     id: '/dashboard',
@@ -80,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/dashboard': typeof ProtectedDashboardLayoutDashboardRoute
+  '/notification': typeof ProtectedDashboardLayoutNotificationRoute
   '/setting': typeof ProtectedDashboardLayoutSettingRoute
   '/subscription': typeof ProtectedDashboardLayoutSubscriptionRoute
   '/spaces/$id': typeof ProtectedDashboardLayoutSpacesIdRoute
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/dashboard': typeof ProtectedDashboardLayoutDashboardRoute
+  '/notification': typeof ProtectedDashboardLayoutNotificationRoute
   '/setting': typeof ProtectedDashboardLayoutSettingRoute
   '/subscription': typeof ProtectedDashboardLayoutSubscriptionRoute
   '/spaces/$id': typeof ProtectedDashboardLayoutSpacesIdRoute
@@ -103,6 +112,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/_protected/_dashboard-layout/dashboard': typeof ProtectedDashboardLayoutDashboardRoute
+  '/_protected/_dashboard-layout/notification': typeof ProtectedDashboardLayoutNotificationRoute
   '/_protected/_dashboard-layout/setting': typeof ProtectedDashboardLayoutSettingRoute
   '/_protected/_dashboard-layout/subscription': typeof ProtectedDashboardLayoutSubscriptionRoute
   '/_protected/_dashboard-layout/spaces/$id': typeof ProtectedDashboardLayoutSpacesIdRoute
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/sign-up'
     | '/dashboard'
+    | '/notification'
     | '/setting'
     | '/subscription'
     | '/spaces/$id'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/sign-up'
     | '/dashboard'
+    | '/notification'
     | '/setting'
     | '/subscription'
     | '/spaces/$id'
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/sign-up'
     | '/_protected/_dashboard-layout/dashboard'
+    | '/_protected/_dashboard-layout/notification'
     | '/_protected/_dashboard-layout/setting'
     | '/_protected/_dashboard-layout/subscription'
     | '/_protected/_dashboard-layout/spaces/$id'
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardLayoutSettingRouteImport
       parentRoute: typeof ProtectedDashboardLayoutRouteRoute
     }
+    '/_protected/_dashboard-layout/notification': {
+      id: '/_protected/_dashboard-layout/notification'
+      path: '/notification'
+      fullPath: '/notification'
+      preLoaderRoute: typeof ProtectedDashboardLayoutNotificationRouteImport
+      parentRoute: typeof ProtectedDashboardLayoutRouteRoute
+    }
     '/_protected/_dashboard-layout/dashboard': {
       id: '/_protected/_dashboard-layout/dashboard'
       path: '/dashboard'
@@ -225,6 +245,7 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedDashboardLayoutRouteRouteChildren {
   ProtectedDashboardLayoutDashboardRoute: typeof ProtectedDashboardLayoutDashboardRoute
+  ProtectedDashboardLayoutNotificationRoute: typeof ProtectedDashboardLayoutNotificationRoute
   ProtectedDashboardLayoutSettingRoute: typeof ProtectedDashboardLayoutSettingRoute
   ProtectedDashboardLayoutSubscriptionRoute: typeof ProtectedDashboardLayoutSubscriptionRoute
   ProtectedDashboardLayoutSpacesIdRoute: typeof ProtectedDashboardLayoutSpacesIdRoute
@@ -234,6 +255,8 @@ const ProtectedDashboardLayoutRouteRouteChildren: ProtectedDashboardLayoutRouteR
   {
     ProtectedDashboardLayoutDashboardRoute:
       ProtectedDashboardLayoutDashboardRoute,
+    ProtectedDashboardLayoutNotificationRoute:
+      ProtectedDashboardLayoutNotificationRoute,
     ProtectedDashboardLayoutSettingRoute: ProtectedDashboardLayoutSettingRoute,
     ProtectedDashboardLayoutSubscriptionRoute:
       ProtectedDashboardLayoutSubscriptionRoute,
