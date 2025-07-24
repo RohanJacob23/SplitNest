@@ -15,6 +15,7 @@ export default defineConfig({
     visualizer({ open: true }),
   ],
   build: {
+    outDir: '../api/dist',
     rollupOptions: {
       output: {
         manualChunks: {

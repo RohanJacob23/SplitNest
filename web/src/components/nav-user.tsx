@@ -2,8 +2,6 @@ import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import {
   Bell,
-  CircleUser,
-  CreditCard,
   EllipsisVertical,
   LogOut,
   Moon,

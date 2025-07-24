@@ -4,6 +4,7 @@ import { auth, type Auth } from "./auth";
 import { authMiddleware } from "./middleware/auth-middleware";
 import { spaces } from "./routes/spaces";
 import { invites } from "./routes/invites";
+import { serveStatic } from "hono/bun";
 
 const app = new Hono<{ Variables: Auth }>();
 
@@ -17,6 +18,9 @@ const router = app
   })
   .route("/spaces", spaces)
   .route("/invites", invites);
+
+app.use("*", serveStatic({ root: "./dist" }));
+app.use("*", serveStatic({ path: "./dist/index.html" }));
 
 export default {
   fetch: app.fetch,

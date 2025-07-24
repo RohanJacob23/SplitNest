@@ -1,15 +1,11 @@
 import { Hono } from "hono";
-import { Auth } from "../auth";
+import type { Auth } from "../auth";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod/v4";
-import {
-  invitesInsertSchema,
-  invites as invitesDb,
-  spaceMembers,
-} from "../db/schema";
+import { invites as invitesDb, spaceMembers } from "../db/schema";
 import { HTTPException } from "hono/http-exception";
 import { db } from "../db";
-import { and, eq, or } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export const invites = new Hono<{ Variables: Auth }>()
   .post(

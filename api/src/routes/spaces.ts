@@ -10,7 +10,7 @@ import {
 } from "../db/schema";
 import { spaces as spacesDb } from "../db/schema";
 import { z } from "zod/v4";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const spaces = new Hono<{ Variables: Auth }>()
   .get("/", async (c) => {

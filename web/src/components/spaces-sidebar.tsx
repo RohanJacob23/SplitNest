@@ -33,7 +33,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from './ui/alert-dialog'
-import { getUser, sleep } from '@/query/get-user'
+import { sleep } from '@/query/get-user'
 import { toast } from 'sonner'
 import { client } from '@/lib/hono-api'
 import { useState } from 'react'

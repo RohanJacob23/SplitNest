@@ -1,4 +1,4 @@
-import { Crown, MailCheck, User } from 'lucide-react'
+import { Crown, User } from 'lucide-react'
 import {
   Card,
   CardContent,
