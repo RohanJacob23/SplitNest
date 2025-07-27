@@ -4,10 +4,7 @@ import { authClient } from "@/lib/auth-client";
 export const sleep = async (ms: number) =>
 	new Promise((resolve) => setTimeout(resolve, ms));
 
-const fetcher = async () => {
-	await sleep(1500);
-	return authClient.getSession();
-};
+const fetcher = async () => authClient.getSession();
 
 export const getUser = queryOptions({
 	queryKey: ["user-auth"],

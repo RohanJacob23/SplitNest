@@ -9,7 +9,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod/v4";
 import { useAppForm } from "@/hooks/form";
-import { sleep } from "@/query/get-user";
 import { type client, orpc } from "@/utils/orpc";
 import {
 	AlertDialog,
@@ -155,8 +154,6 @@ const EditDialog = ({ spaceMember, ...props }: DialogProps) => {
 			}),
 		},
 		onSubmit: async ({ value, formApi }) => {
-			await sleep(1500);
-
 			if (formApi.state.isDefaultValue) {
 				toast.warning("No changes made");
 				return;

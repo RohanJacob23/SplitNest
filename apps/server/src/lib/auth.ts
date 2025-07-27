@@ -5,7 +5,14 @@ import * as schema from "../db/schema";
 
 export const auth = betterAuth({
 	trustedOrigins: [process.env.CORS_ORIGIN || ""],
-	advanced: { cookiePrefix: "splitNest-auth" },
+	advanced: {
+		cookiePrefix: "splitNest-auth",
+		cookies: {
+			session_token: { attributes: { sameSite: "none" } },
+			session_data: { attributes: { sameSite: "none" } },
+		},
+		useSecureCookies:true
+	},
 	session: { cookieCache: { enabled: true, maxAge: 7 * 24 * 60 * 60 } },
 	emailAndPassword: {
 		enabled: true,

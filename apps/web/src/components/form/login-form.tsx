@@ -16,7 +16,6 @@ import { GithubIcon } from "@/icons/logo/github";
 import { GoogleIcon } from "@/icons/logo/google";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { sleep } from "@/query/get-user";
 
 const loginFormSchema = z.object({
 	email: z.email(),
@@ -39,7 +38,6 @@ export default function LoginForm({
 		validators: { onSubmit: loginFormSchema },
 		onSubmit: async ({ value }) => {
 			const loadingToast = toast.loading("Logging in...");
-			await sleep(1500);
 
 			await authClient.signIn.email(value, {
 				onSuccess() {

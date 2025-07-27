@@ -16,7 +16,6 @@ import { GithubIcon } from "@/icons/logo/github";
 import { GoogleIcon } from "@/icons/logo/google";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { sleep } from "@/query/get-user";
 
 const signUpFormSchema = z.object({
 	name: z.string().min(1, { error: "Name is required" }),
@@ -41,8 +40,6 @@ export default function SignUpForm({
 		validators: { onSubmit: signUpFormSchema },
 		onSubmit: async ({ value }) => {
 			const loadingToast = toast.loading("Siging up...");
-
-			await sleep(1500);
 
 			await authClient.signUp.email(value, {
 				onSuccess() {

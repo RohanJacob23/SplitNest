@@ -11,7 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 import type { orpc } from "@/utils/orpc";
 import "../index.css";
 import Error404 from "@/components/pages/error";
-import { useServerStatus } from "@/components/server-status";
+import { useServerStatus } from "@/hooks/server-status";
 import { getUser } from "@/query/get-user";
 
 export interface RouterAppContext {
