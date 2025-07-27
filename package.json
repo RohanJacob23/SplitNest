@@ -1,17 +1,28 @@
 {
-  "name": "splitNest",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "turbo dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
-  "devDependencies": {
-    "turbo": "^2.5.4"
-  }
+	"name": "SplitNest",
+	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"scripts": {
+		"check": "biome check --write .",
+		"dev": "turbo dev",
+		"build": "turbo build",
+		"check-types": "turbo check-types",
+		"dev:native": "turbo -F native dev",
+		"dev:web": "turbo -F web dev",
+		"dev:server": "turbo -F server dev",
+		"db:push": "turbo -F server db:push",
+		"db:pull": "turbo -F server db:pull",
+		"db:studio": "turbo -F server db:studio",
+		"db:generate": "turbo -F server db:generate",
+		"db:migrate": "turbo -F server db:migrate"
+	},
+	"packageManager": "pnpm@10.13.1",
+	"dependencies": {},
+	"devDependencies": {
+		"turbo": "^2.5.4",
+		"@biomejs/biome": "^2.0.0"
+	}
 }
