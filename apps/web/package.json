@@ -7,7 +7,7 @@
 		"dev": "vite --port=3001",
 		"build": "vite build",
 		"serve": "vite preview",
-		"start": "vite",
+		"start": "vite preview --port=3001",
 		"check-types": "tsc --noEmit"
 	},
 	"devDependencies": {
@@ -21,8 +21,7 @@
 		"postcss": "^8.5.3",
 		"tailwindcss": "^4.0.15",
 		"tailwindcss-animate": "^1.0.7",
-		"vite": "^6.2.2",
-		"vite-plugin-vercel": "^9.0.7"
+		"vite": "^6.2.2"
 	},
 	"dependencies": {
 		"@gsap/react": "^2.1.2",

@@ -3,14 +3,12 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import vercel from "vite-plugin-vercel";
 
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		tanstackRouter({ autoCodeSplitting: true }),
 		react(),
-		vercel(),
 	],
 	build: {
 		rollupOptions: {
