@@ -1,1 +1,0 @@
-ALTER TABLE "space_members" ALTER COLUMN "joined_at" SET DEFAULT now();
