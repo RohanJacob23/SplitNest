@@ -1,0 +1,1 @@
+ALTER TABLE "subscriptions" ALTER COLUMN "payer_id" SET NOT NULL;

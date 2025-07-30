@@ -23,7 +23,7 @@ export default function NewSpaceForm() {
 				loading: "Creating space...",
 				success: ({ message }) => {
 					queryClient.invalidateQueries({
-						queryKey: orpc.spaces.get.all.queryKey(),
+						queryKey: orpc.spaces.get.all.key(),
 					});
 
 					form.reset();

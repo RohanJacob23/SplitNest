@@ -50,16 +50,22 @@ export const user = pgTable("user", {
 export const spaces = pgTable("spaces", {
 	id: serial("id").primaryKey(),
 	name: text("name").notNull(),
-	ownerId: text("owner_id").references(() => user.id, { onDelete: "cascade" }),
+	ownerId: text("owner_id")
+		.references(() => user.id, { onDelete: "cascade" })
+		.notNull(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const spaceMembers = pgTable("space_members", {
 	id: serial("id").primaryKey(),
-	spaceId: integer("space_id").references(() => spaces.id, {
-		onDelete: "cascade",
-	}),
-	userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
+	spaceId: integer("space_id")
+		.references(() => spaces.id, {
+			onDelete: "cascade",
+		})
+		.notNull(),
+	userId: text("user_id")
+		.references(() => user.id, { onDelete: "cascade" })
+		.notNull(),
 	role: roleEnum("role").notNull().default("admin"),
 	joinedAt: timestamp("joined_at").notNull().defaultNow(),
 });
@@ -74,7 +80,9 @@ export const subscriptions = pgTable("subscriptions", {
 	currency: text("currency").default("USD"),
 	dueDay: integer("due_day").notNull(), // 1–31
 	category: categoryEnum("category").default("other"),
-	payerId: text("payer_id").references(() => user.id, { onDelete: "cascade" }),
+	payerId: text("payer_id")
+		.references(() => user.id, { onDelete: "cascade" })
+		.notNull(),
 	splitMethod: jsonb("split_method")
 		.$type<{ type: "equal" | "custom"; percentages: Record<string, number> }>()
 		.notNull(), // e.g., {type:"equal"} or {type:"custom", percentages:{user1:50,user2:50}}
@@ -171,3 +179,5 @@ export const verification = pgTable("verification", {
 export const invitesInsertSchema = createInsertSchema(invites);
 export const spacesInsertSchema = createInsertSchema(spaces);
 export const spacesUpdateSchema = createUpdateSchema(spaces);
+export const subscriptionInsertSchema = createInsertSchema(subscriptions);
+export const subscriptionUpdateSchema = createUpdateSchema(subscriptions);

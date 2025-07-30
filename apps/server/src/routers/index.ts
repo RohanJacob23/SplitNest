@@ -1,6 +1,7 @@
 import { protectedProcedure, publicProcedure } from "../lib/orpc";
 import { invitesRouter } from "./invites";
 import { spaceRouter } from "./spaces";
+import { subscriptionRouter } from "./subscription";
 
 export const appRouter = {
 	healthCheck: publicProcedure.handler(() => {
@@ -14,5 +15,6 @@ export const appRouter = {
 	}),
 	spaces: spaceRouter,
 	invites: invitesRouter,
+	subscriptions: subscriptionRouter,
 };
 export type AppRouter = typeof appRouter;

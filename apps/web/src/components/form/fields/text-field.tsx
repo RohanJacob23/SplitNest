@@ -13,7 +13,7 @@ export default function TextField({
 	const field = useFieldContext<string>();
 
 	return (
-		<div className="*:not-first:mt-2">
+		<div className="flex-auto *:not-first:mt-2">
 			<Label htmlFor={label}>{label}</Label>
 			<Input
 				id={label}

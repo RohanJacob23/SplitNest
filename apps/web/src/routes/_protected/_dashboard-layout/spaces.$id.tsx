@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { z } from "zod/v4";
 import CommingSoonCard from "@/components/comming-soon-card";
 import Error404 from "@/components/pages/error";
+import SpaceSubscriptionDataTable from "@/components/table/space-subscription-data-table";
 import MembersContent from "@/components/tabs-content/members-content";
 import { Button } from "@/components/ui/button";
 import {
@@ -205,7 +206,16 @@ function RouteComponent() {
 					<OverviewTabContent />
 				</TabsContent>
 				<TabsContent value="subscriptions">
-					<CommingSoonCard />
+					<Suspense fallback={<Skeleton className="h-96 w-full" />}>
+						<Card className="gap-2">
+							<CardHeader>
+								<CardTitle>Subscriptions</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<SpaceSubscriptionDataTable spaceId={Number(id)} />
+							</CardContent>
+						</Card>
+					</Suspense>
 				</TabsContent>
 				<TabsContent value="purchases">
 					<CommingSoonCard />

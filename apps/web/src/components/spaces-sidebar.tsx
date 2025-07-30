@@ -170,7 +170,7 @@ const EditDialog = ({ spaceMember, ...props }: DialogProps) => {
 					loading: "Updating space...",
 					success: ({ message }) => {
 						queryClient.invalidateQueries({
-							queryKey: orpc.spaces.get.all.queryKey(),
+							queryKey: orpc.spaces.get.all.key(),
 						});
 
 						props.onOpenChange();
@@ -242,7 +242,7 @@ const DeleteDialog = ({
 			loading: "Deleting space...",
 			success: ({ message }) => {
 				queryClient.invalidateQueries({
-					queryKey: orpc.spaces.get.all.queryKey(),
+					queryKey: orpc.spaces.get.all.key(),
 				});
 
 				return message;

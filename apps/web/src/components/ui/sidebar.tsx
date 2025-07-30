@@ -703,12 +703,12 @@ function SidebarMenuSubButton({
 	isActive = false,
 	className,
 	...props
-}: React.ComponentProps<"a"> & {
+}: React.ComponentProps<"span"> & {
 	asChild?: boolean;
 	size?: "sm" | "md";
 	isActive?: boolean;
 }) {
-	const Comp = asChild ? Slot : "a";
+	const Comp = asChild ? Slot : "span";
 
 	return (
 		<Comp

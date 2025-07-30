@@ -43,10 +43,10 @@ function RouteComponent() {
 			loading: "Accepting invite...",
 			success: ({ message }) => {
 				queryClient.invalidateQueries({
-					queryKey: orpc.invites.get.queryKey(),
+					queryKey: orpc.invites.get.key(),
 				});
 				queryClient.invalidateQueries({
-					queryKey: orpc.spaces.get.all.queryKey(),
+					queryKey: orpc.spaces.get.all.key(),
 				});
 
 				return message;
@@ -60,7 +60,7 @@ function RouteComponent() {
 			loading: "Declining invite...",
 			success: ({ message }) => {
 				queryClient.invalidateQueries({
-					queryKey: orpc.invites.get.queryKey(),
+					queryKey: orpc.invites.get.key(),
 				});
 
 				return message;

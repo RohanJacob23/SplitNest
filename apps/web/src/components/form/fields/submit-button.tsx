@@ -21,7 +21,7 @@ export default function SubmitButton({
 					type="submit"
 					animate={{ x: !isValid ? [null, -5, 0, 5, 0] : undefined }}
 					transition={{ x: { duration: 0.2 } }}
-					disabled={isSubmitting}
+					disabled={isSubmitting || isLoading}
 					isLoading={isSubmitting || isLoading}
 					className={cn("overflow-y-clip", className)}
 				>

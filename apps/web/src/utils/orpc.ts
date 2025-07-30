@@ -1,6 +1,6 @@
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
-import type { RouterClient } from "@orpc/server";
+import type { InferRouterOutputs, RouterClient } from "@orpc/server";
 import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -35,3 +35,11 @@ export const link = new RPCLink({
 export const client: RouterClient<typeof appRouter> = createORPCClient(link);
 
 export const orpc = createTanstackQueryUtils(client);
+
+export type Subscription = InferRouterOutputs<
+	typeof appRouter.subscriptions.all
+>[number];
+
+export type SpaceSubscription = InferRouterOutputs<
+	typeof appRouter.subscriptions.listAll
+>[number];

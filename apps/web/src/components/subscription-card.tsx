@@ -1,41 +1,67 @@
 // components/SubscriptionCard.tsx
 
-import { Pencil, Trash2 } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { DollarSign, Pencil, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import type { SubscriptionProps } from "@/routes/_protected/_dashboard-layout/subscription";
+import { cn } from "@/lib/utils";
+import { orpc, type Subscription as SubscriptionProps } from "@/utils/orpc";
 
-export default function SubscriptionCard({
-	icon: Icon,
-	name,
-	amount,
-	dueDate,
-	paidBy,
-	status,
-	// split,
-}: SubscriptionProps) {
+export default function SubscriptionCard(props: SubscriptionProps) {
+	const deleteSubscriptionMutation = useMutation(
+		orpc.subscriptions.delete.mutationOptions(),
+	);
+
+	const queryClient = useQueryClient();
+
+	const handleDelete = async () => {
+		toast.promise(
+			deleteSubscriptionMutation.mutateAsync({ subscriptionId: props.id }),
+			{
+				loading: "Deleting subscription...",
+				success: ({ message }) => {
+					queryClient.invalidateQueries({
+						queryKey: orpc.subscriptions.all.key(),
+					});
+					return message;
+				},
+				error: "Error deleting subscription",
+			},
+		);
+	};
+
 	return (
 		<Card className="shadow-sm transition-all duration-300 hover:shadow-md">
 			<CardContent className="space-y-2.5">
 				<div className="flex items-center justify-between">
 					<div className="text-3xl">
-						<Icon />
+						<DollarSign className="size-6" />
 					</div>
-					<Badge variant="secondary">{status}</Badge>
+					{/* <Badge variant="outline" className="gap-1.5 rounded-full capitalize">
+						<span
+							className={cn(
+								"size-1.5 rounded-full",
+								status === "active" ? "bg-emerald-500" : "bg-yellow-500",
+							)}
+							aria-hidden="true"
+						/>
+						{props.}
+					</Badge> */}
 				</div>
 
 				<div>
-					<h2 className="font-semibold text-lg">{name}</h2>
-					<p className="text-muted-foreground text-sm">{amount}</p>
+					<h2 className="font-semibold text-lg">{props.name}</h2>
+					<p className="text-muted-foreground text-sm">{props.amount}</p>
 				</div>
 
 				<div className="space-y-1 text-muted-foreground text-sm">
 					<p>
-						<span className="font-medium">Due:</span> {dueDate}
+						<span className="font-medium">Due:</span> {props.dueDay}
 					</p>
 					<p>
-						<span className="font-medium">Paid By:</span> {paidBy}
+						<span className="font-medium">Paid By:</span> {props.payer.name}
 					</p>
 					<p>
 						<span className="font-medium">Split:</span> {0}
@@ -46,7 +72,8 @@ export default function SubscriptionCard({
 					<Button
 						variant="outline"
 						size="sm"
-						className="flex items-center gap-1"
+						className="flex flex-1 items-center gap-1"
+						disabled={deleteSubscriptionMutation.isPending}
 					>
 						<Pencil size={14} />
 						Edit
@@ -54,7 +81,9 @@ export default function SubscriptionCard({
 					<Button
 						variant="destructive"
 						size="sm"
-						className="flex items-center gap-1"
+						className="flex flex-1 items-center gap-1"
+						isLoading={deleteSubscriptionMutation.isPending}
+						onClick={handleDelete}
 					>
 						<Trash2 size={14} />
 						Delete

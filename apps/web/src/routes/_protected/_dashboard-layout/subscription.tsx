@@ -1,3 +1,4 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
 	Car,
@@ -10,9 +11,18 @@ import {
 	Wifi,
 } from "lucide-react";
 import { useState } from "react";
+import NewSubscriptionForm from "@/components/form/new-subscription-form";
 import SubscriptionCard from "@/components/subscription-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+	Modal,
+	ModalContent,
+	ModalDescription,
+	ModalHeader,
+	ModalTitle,
+	ModalTrigger,
+} from "@/components/ui/modal";
 import {
 	Select,
 	SelectContent,
@@ -20,10 +30,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { orpc, type Subscription } from "@/utils/orpc";
 
 export const Route = createFileRoute(
 	"/_protected/_dashboard-layout/subscription",
 )({
+	loader: ({ context: { orpc, queryClient } }) =>
+		queryClient.ensureQueryData(orpc.subscriptions.all.queryOptions()),
 	component: SubscriptionsPage,
 });
 
@@ -123,9 +136,12 @@ const mockSubscriptions = [
 		],
 	},
 ];
-export type SubscriptionProps = (typeof mockSubscriptions)[number];
-
 export default function SubscriptionsPage() {
+	const { data: subscriptions } = useSuspenseQuery(
+		orpc.subscriptions.all.queryOptions(),
+	);
+
+	// TODO: work on filter
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("all");
 
@@ -147,10 +163,21 @@ export default function SubscriptionsPage() {
 						<h1 className="mb-2 font-bold text-3xl">Subscriptions</h1>
 						<p>Manage your shared subscriptions with ease</p>
 					</div>
-					<Button className="">
-						<Plus className="mr-2 h-4 w-4" />
-						Add Subscription
-					</Button>
+					<Modal>
+						<ModalTrigger asChild>
+							<Button className="">
+								<Plus className="mr-2 h-4 w-4" />
+								Add Subscription
+							</Button>
+						</ModalTrigger>
+						<ModalContent className="overflow-hidden p-0">
+							<ModalHeader className="px-4 pt-4">
+								<ModalTitle>Add Subscription</ModalTitle>
+								<ModalDescription>Add a new subscription</ModalDescription>
+							</ModalHeader>
+							<NewSubscriptionForm />
+						</ModalContent>
+					</Modal>
 				</div>
 
 				{/* Filters */}
@@ -176,11 +203,21 @@ export default function SubscriptionsPage() {
 					</Select>
 				</div>
 
-				{/* Subscriptions Grid */}
-				<div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-					{filteredSubscriptions.map((subscription) => (
-						<SubscriptionCard key={subscription.id} {...subscription} />
-					))}
+				<div className="space-y-4">
+					<h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+						All Subscriptions
+					</h1>
+
+					{subscriptions.length === 0 ? (
+						<p className="text-muted-foreground text-xl">No Subscriptions</p>
+					) : (
+						// subscription card
+						<div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+							{subscriptions.map((subscription) => (
+								<SubscriptionCard key={subscription.id} {...subscription} />
+							))}
+						</div>
+					)}
 				</div>
 
 				{/* Empty State */}
